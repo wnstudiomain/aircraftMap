@@ -42,6 +42,7 @@ var MessageRate = 0;
 
 var NBSP='\u00a0';
 
+
 function processReceiverUpdate(data) {
 	// Loop through all the planes in the data packet
         var now = data.now;
@@ -91,6 +92,7 @@ function processReceiverUpdate(data) {
 
                         plane.tr.addEventListener('click', function(h, evt) {
                                 selectPlaneByHex(h, false);
+                                console.log('111')
                                 evt.preventDefault();
                         }.bind(undefined, hex));
 
@@ -101,13 +103,15 @@ function processReceiverUpdate(data) {
                         
                         Planes[hex] = plane;
                         PlanesOrdered.push(plane);
+
+
 		}
 
 		// Call the function update
 		plane.updateData(now, ac);
 	}
 }
-
+console.log(Planes)
 function fetchData() {
         if (FetchPending !== null && FetchPending.state() == 'pending') {
                 // don't double up on fetches, let the last one resolve
@@ -127,11 +131,12 @@ function fetchData() {
                 for (var i = 0; i < PlanesOrdered.length; ++i) {
                         var plane = PlanesOrdered[i];
                         plane.updateTick(now, LastReceiverTimestamp);
+
                 }
-                
+
 		refreshTableInfo();
 		refreshSelected();
-                
+
                 if (ReceiverClock) {
                         var rcv = new Date(now * 1000);
                         ReceiverClock.render(rcv.getUTCHours(),rcv.getUTCMinutes(),rcv.getUTCSeconds());
@@ -144,7 +149,7 @@ function fetchData() {
                                 $("#update_error_detail").text("The data from dump1090 hasn't been updated in a while. Maybe dump1090 is no longer running?");
                                 $("#update_error").css('display','block');
                         }
-                } else { 
+                } else {
                         StaleReceiverCount = 0;
                         LastReceiverTimestamp = now;
                         $("#update_error").css('display','none');
@@ -156,6 +161,7 @@ function fetchData() {
                 $("#update_error").css('display','block');
         });
 }
+
 
 var PositionHistorySize = 0;
 function initialize() {
@@ -242,7 +248,7 @@ function load_history_item(i) {
                 return;
         }
 
-        console.log("Loading history #" + i);
+        // console.log("Loading history #" + i);
         $("#loader_progress").attr('value',i);
 
         $.ajax({ url: 'data/history_' + i + '.json',
@@ -264,23 +270,23 @@ function load_history_item(i) {
 function end_load_history() {
         $("#loader").addClass("hidden");
 
-        console.log("Done loading history");
+        //console.log("Done loading history");
 
         if (PositionHistoryBuffer.length > 0) {
                 var now, last=0;
 
                 // Sort history by timestamp
-                console.log("Sorting history");
+                //console.log("Sorting history");
                 PositionHistoryBuffer.sort(function(x,y) { return (x.now - y.now); });
 
                 // Process history
                 for (var h = 0; h < PositionHistoryBuffer.length; ++h) {
                         now = PositionHistoryBuffer[h].now;
-                        console.log("Applying history " + h + "/" + PositionHistoryBuffer.length + " at: " + now);
+                        //console.log("Applying history " + h + "/" + PositionHistoryBuffer.length + " at: " + now);
                         processReceiverUpdate(PositionHistoryBuffer[h]);
 
                         // update track
-                        console.log("Updating tracks at: " + now);
+                        //console.log("Updating tracks at: " + now);
                         for (var i = 0; i < PlanesOrdered.length; ++i) {
                                 var plane = PlanesOrdered[i];
                                 plane.updateTrack((now - last) + 1);
@@ -290,7 +296,7 @@ function end_load_history() {
                 }
 
                 // Final pass to update all planes to their latest state
-                console.log("Final history cleanup pass");
+                //console.log("Final history cleanup pass");
                 for (var i = 0; i < PlanesOrdered.length; ++i) {
                         var plane = PlanesOrdered[i];
                         plane.updateTick(now);
@@ -301,7 +307,7 @@ function end_load_history() {
 
         PositionHistoryBuffer = null;
 
-        console.log("Completing init");
+        //console.log("Completing init");
 
         refreshTableInfo();
         refreshSelected();
@@ -521,7 +527,7 @@ function initialize_map() {
                         var circleStyle = new ol.style.Style({
                                 fill: null,
                                 stroke: new ol.style.Stroke({
-                                        color: '#000000',
+                                        color: '#аа000',
                                         width: 1
                                 })
                         });
@@ -921,7 +927,7 @@ function selectPlaneByHex(hex,autofollow) {
 		Planes[SelectedPlane].updateLines();
 		Planes[SelectedPlane].updateMarker();
                 $(Planes[SelectedPlane].tr).addClass("selected");
-	} else { 
+	} else {
 		SelectedPlane = null;
 	}
 
@@ -931,7 +937,9 @@ function selectPlaneByHex(hex,autofollow) {
                         OLMap.getView().setZoom(8);
         } else {
                 FollowSelected = false;
-        } 
+        }
+
+        console.log(Planes[SelectedPlane])
 
         refreshSelected();
 }
@@ -955,3 +963,17 @@ function resetMap() {
 	
 	selectPlaneByHex(null,false);
 }
+function aircraftInfo () {
+        $.ajax({
+                url: 'http://api.aviationstack.com/v1/flights',
+                data: {
+                        access_key: '2498ca1f7fa59b3d6c6a3f625fdc57d1',
+                        flight_icao: 'AFL1966'
+                },
+                dataType: 'json',
+                success: function(apiResponse) {
+                        console.log(apiResponse)
+                }
+        });
+}
+//aircraftInfo ()
