@@ -2,67 +2,104 @@
 "use strict";
 
 // Base layers configuration
-function greyscale(context) {
-        var canvas = context.canvas;
-        var width = canvas.width;
-        var height = canvas.height;
-        var imageData = context.getImageData(0, 0, width, height);
-        var data = imageData.data;
-        for(i=0; i<data.length; i += 4){
-                var r = data[i];
-                var g = data[i + 1];
-                var b = data[i + 2];
-                // CIE luminance for the RGB
-                var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-                // Show white color instead of black color while loading new tiles:
-                if(v === 0.0)
-                        v=255.0;
-                data[i+0] = v; // Red
-                data[i+1] = v; // Green
-                data[i+2] = v; // Blue
-                data[i+3] = 255; // Alpha
-        }
-        context.putImageData(imageData,0,0);
 
-}
 function createBaseLayers() {
         var layers = [];
 
         var world = [];
         var us = [];
+        var europe = [];
 
         world.push(new ol.layer.Tile({
-                source: new ol.source.OSM({
-                        url: 'https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=9cb47d50d072496992a29f42e7734972'
-}),
+                source: new ol.source.OSM(),
                 name: 'osm',
                 title: 'OpenStreetMap',
                 type: 'base',
-
-
         }));
- 
-        var xyz1 = new ol.source.XYZ({
-                url: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png\n'
-        })
-
-        var xyz2 = new ol.source.XYZ({
-                url: 'https://maps-cdn.salesboard.biz/styles/klokantech-3d-gl-style/{z}/{x}/{y}.png\n'
-        })
 
         world.push(new ol.layer.Tile({
-                source: xyz1,
-                name: 'osm2',
-                title: 'OpenStreetMap2',
+                source: new ol.source.XYZ({
+                        "url" : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+	                "attributions" : "Tiles © Esri - Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+                }),
+	        name: 'esri_satellite',
+                title: 'ESRI Satellite',
                 type: 'base',
-        }));
+	}));
+
         world.push(new ol.layer.Tile({
-                source: xyz2,
-                name: 'osm3',
-                title: 'OpenStreetMap3',
+                source: new ol.source.XYZ({
+                        "url" : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+                        "attributions" : "Tiles © Esri - Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+                }),
+                name: 'esri_topo',
+                title: 'ESRI Topographic',
                 type: 'base',
         }));
 
+        world.push(new ol.layer.Tile({
+                source: new ol.source.XYZ({
+			"url" : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+                        "attributions" : "Tiles © Esri - Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+                }),
+                name: 'esri_street',
+                title: 'ESRI Street',
+                type: 'base',
+        }));
+
+        world.push(new ol.layer.Tile({
+                source: new ol.source.XYZ({
+			"url" : "http://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+			"attributions" : "© <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">OpenStreetMap</a>  contributors."
+                }),
+                name: 'osm_blackwhite',
+                title: 'OSM Black and White',
+                type: 'base',
+        }));
+
+        world.push(new ol.layer.Tile({
+                source: new ol.source.OSM({
+                        "url" : "https://{a-z}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
+                        "attributions" : 'Courtesy of <a href="https://carto.com">CARTO.com</a>'
+                               + ' using data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+                }),
+                name: 'carto_dark_all',
+                title: 'CARTO.com Dark',
+                type: 'base',
+        }));
+
+        world.push(new ol.layer.Tile({
+                source: new ol.source.OSM({
+                        "url" : "https://{a-z}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
+                        "attributions" : 'Courtesy of <a href="https://carto.com">CARTO.com</a>'
+                               + ' using data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+                }),
+                name: 'carto_dark_nolabels',
+                title: 'CARTO.com Dark (No Labels)',
+                type: 'base',
+        }));
+
+        world.push(new ol.layer.Tile({
+                source: new ol.source.OSM({
+                        "url" : "https://{a-z}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+                        "attributions" : 'Courtesy of <a href="https://carto.com">CARTO.com</a>'
+                               + ' using data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+                }),
+                name: 'carto_light_all',
+                title: 'CARTO.com Light',
+                type: 'base',
+        }));
+
+        world.push(new ol.layer.Tile({
+                source: new ol.source.OSM({
+                        "url" : "https://{a-z}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png",
+                        "attributions" : 'Courtesy of <a href="https://carto.com">CARTO.com</a>'
+                               + ' using data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+                }),
+                name: 'carto_light_nolabels',
+                title: 'CARTO.com Light (No Labels)',
+                type: 'base',
+        }));
 
 
         if (BingMapsAPIKey) {
@@ -78,16 +115,12 @@ function createBaseLayers() {
                 world.push(new ol.layer.Tile({
                         source: new ol.source.BingMaps({
                                 key: BingMapsAPIKey,
-                                imagerySet: 'Road'
+                                imagerySet: 'RoadOnDemand'
                         }),
                         name: 'bing_roads',
                         title: 'Bing Roads',
                         type: 'base',
                 }));
-        }
-
-        if (MapzenAPIKey) {
-                world.push(createMapzenLayer());
         }
 
         if (ChartBundleLayers) {
@@ -97,7 +130,8 @@ function createBaseLayers() {
                         hel: "Helicopter Charts",
                         enrl: "IFR Enroute Low Charts",
                         enra: "IFR Area Charts",
-                        enrh: "IFR Enroute High Charts"
+                        enrh: "IFR Enroute High Charts",
+                        secgrids: "Sect. w/ SAR grid"
                 };
 
                 for (var type in chartbundleTypes) {
@@ -136,6 +170,79 @@ function createBaseLayers() {
         refreshNexrad();
         window.setInterval(refreshNexrad, 5 * 60000);
 
+        var createGeoJsonLayer = function (title, name, url, fill, stroke, showLabel = true) {
+                return new ol.layer.Vector({
+                    type: 'overlay',
+                    title: title,
+                    name: name,
+                    zIndex: 99,
+                    visible: false,
+                    source: new ol.source.Vector({
+                      url: url,
+                      format: new ol.format.GeoJSON({
+                        defaultDataProjection :'EPSG:4326',
+                            projection: 'EPSG:3857'
+                      })
+                    }),
+                    style: function style(feature) {
+                        return new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color : fill
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: stroke,
+                                width: 1
+                            }),
+                            text: new ol.style.Text({
+                                text: showLabel ? feature.get("name") : "",
+                                overflow: OLMap.getView().getZoom() > 5,
+                                scale: 1.25,
+                                fill: new ol.style.Fill({
+                                    color: '#000000'
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#FFFFFF',
+                                    width: 2
+                                })
+                            })
+                        });
+                    }
+                });
+            };
+
+        var dwd = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                        url: 'https://maps.dwd.de/geoserver/wms',
+                        params: {LAYERS: 'dwd:RX-Produkt', validtime: (new Date()).getTime()},
+                        projection: 'EPSG:3857',
+                        attributions: 'Deutscher Wetterdienst (DWD)'
+                }),
+                name: 'radolan',
+                title: 'DWD RADOLAN',
+                type: 'overlay',
+                opacity: 0.3,
+                visible: false,
+                zIndex: 99,
+                maxZoom: 14,
+        });
+
+        var refreshDwd = function () {
+                dwd.getSource().updateParams({"validtime": (new Date()).getTime()});
+        };
+
+        refreshDwd();
+        window.setInterval(refreshDwd, 4 * 60000);
+
+        europe.push(dwd);
+
+        // Taken from https://github.com/alkissack/Dump1090-OpenLayers3-html
+        us.push(createGeoJsonLayer('US A2A Refueling', 'usa2arefueling', 'geojson/US_A2A_refueling.geojson', 'rgba(52, 50, 168, 0.3)', 'rgba(52, 50, 168, 1)'));
+        us.push(createGeoJsonLayer('US ARTCC Boundaries', 'usartccboundaries', 'geojson/US_ARTCC_boundaries.geojson', 'rgba(255, 0, 255, 0.3)', 'rgba(255, 0, 255, 1)', false));
+
+        europe.push(createGeoJsonLayer('UK Radar Corridors', 'ukradarcorridors', 'geojson/UK_Mil_RC.geojson', 'rgba(22, 171, 22, 0.3)', 'rgba(22, 171, 22, 1)'));
+        europe.push(createGeoJsonLayer('UK A2A Refueling', 'uka2arefueling', 'geojson/UK_Mil_AAR_Zones.geojson', 'rgba(52, 50, 168, 0.3)', 'rgba(52, 50, 168, 1)'));
+        europe.push(createGeoJsonLayer('UK AWACS Orbits', 'uka2awacsorbits', 'geojson/UK_Mil_AWACS_Orbits.geojson', 'rgba(252, 186, 3, 0.3)', 'rgba(252, 186, 3, 1)', false));
+
         if (world.length > 0) {
                 layers.push(new ol.layer.Group({
                         name: 'world',
@@ -152,101 +259,13 @@ function createBaseLayers() {
                 }));
         }
 
+        if (europe.length > 0) {
+                layers.push(new ol.layer.Group({
+                        name: 'europe',
+                        title: 'Europe',
+                        layers: europe,
+                }));
+        }
+
         return layers;
-}
-
-function createMapzenLayer() {
-        // draw earth with a fat stroke;
-        // force water above earth
-
-        var earthStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                        color: '#a06000'
-                }),
-                stroke: new ol.style.Stroke({
-                        color: '#a06000',
-                        width: 5.0
-                }),
-                zIndex: 0
-        });
-
-        var waterStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                        color: '#0040a0'
-                }),
-                stroke: new ol.style.Stroke({
-                        color: '#0040a0',
-                        width: 1.0
-                }),
-                zIndex: 1
-        });
-
-        var boundaryStyle = new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                        color: '#804000',
-                        width: 2.0
-                }),
-                zIndex: 2
-        });
-
-        var dashedBoundaryStyle = new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                        color: '#804000',
-                        width: 1.0,
-                        lineDash: [4, 4],
-                }),
-                zIndex: 2
-        });
-
-        var styleMap = {
-                earth: earthStyle,
-
-                water: waterStyle,
-                basin: waterStyle,
-                dock: waterStyle,
-                lake: waterStyle,
-                ocean: waterStyle,
-                riverbank: waterStyle,
-                river: waterStyle,
-
-                country: boundaryStyle,
-                disputed: dashedBoundaryStyle,
-                indefinite: dashedBoundaryStyle,
-                indeterminate: dashedBoundaryStyle,
-                line_of_control: dashedBoundaryStyle
-        };
-
-        return new ol.layer.VectorTile({
-                name: 'mapzen_vector',
-                title: 'Mapzen coastlines and water',
-                type: 'base',
-                renderMode: 'image',
-                renderOrder: function(a,b) {
-                        return a.get('sort_key') - b.get('sort_key');
-                },
-                source: new ol.source.VectorTile({
-                        url: '//vector.mapzen.com/osm/earth,water,boundaries/{z}/{x}/{y}.topojson?api_key=' + MapzenAPIKey,
-                        format: new ol.format.TopoJSON(),
-                        attributions: [
-                                new ol.Attribution({
-                                        html: 'Tiles courtesy of <a href="http://mapzen.com">Mapzen</a>'
-                                }),
-                                new ol.Attribution({
-                                        html: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                })
-                        ],
-
-                        tileGrid: ol.tilegrid.createXYZ({
-                                preload: 3,
-                                maxZoom: 14,
-                                tileSize: [512, 512]
-                        }),
-
-                        wrapX: true
-                }),
-
-                style: function (feature) {
-                        return (styleMap[feature.get('kind')]);
-                }
-        });
 }
