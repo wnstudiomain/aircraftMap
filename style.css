@@ -41,4 +41,3 @@ div#loader { z-index: 99; position: absolute; left: 0; top: 0; bottom: 0; right:
 .dim    { opacity: 0.3; filter:alpha(opacity=30); /* For IE8 and earlier */ }
 
 .pointer { cursor: pointer; }
-

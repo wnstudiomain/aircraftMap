@@ -2,7 +2,29 @@
 "use strict";
 
 // Base layers configuration
+function greyscale(context) {
+        var canvas = context.canvas;
+        var width = canvas.width;
+        var height = canvas.height;
+        var imageData = context.getImageData(0, 0, width, height);
+        var data = imageData.data;
+        for(i=0; i<data.length; i += 4){
+                var r = data[i];
+                var g = data[i + 1];
+                var b = data[i + 2];
+                // CIE luminance for the RGB
+                var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                // Show white color instead of black color while loading new tiles:
+                if(v === 0.0)
+                        v=255.0;
+                data[i+0] = v; // Red
+                data[i+1] = v; // Green
+                data[i+2] = v; // Blue
+                data[i+3] = 255; // Alpha
+        }
+        context.putImageData(imageData,0,0);
 
+}
 function createBaseLayers() {
         var layers = [];
 
@@ -10,11 +32,38 @@ function createBaseLayers() {
         var us = [];
 
         world.push(new ol.layer.Tile({
-                source: new ol.source.OSM(),
+                source: new ol.source.OSM({
+                        url: 'https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=9cb47d50d072496992a29f42e7734972'
+}),
                 name: 'osm',
                 title: 'OpenStreetMap',
                 type: 'base',
+
+
         }));
+ 
+        var xyz1 = new ol.source.XYZ({
+                url: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png\n'
+        })
+
+        var xyz2 = new ol.source.XYZ({
+                url: 'https://maps-cdn.salesboard.biz/styles/klokantech-3d-gl-style/{z}/{x}/{y}.png\n'
+        })
+
+        world.push(new ol.layer.Tile({
+                source: xyz1,
+                name: 'osm2',
+                title: 'OpenStreetMap2',
+                type: 'base',
+        }));
+        world.push(new ol.layer.Tile({
+                source: xyz2,
+                name: 'osm3',
+                title: 'OpenStreetMap3',
+                type: 'base',
+        }));
+
+
 
         if (BingMapsAPIKey) {
                 world.push(new ol.layer.Tile({
