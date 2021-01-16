@@ -15,7 +15,7 @@ MessageRateInTitle = false;
 // metric (m, km, km/h) or imperial (ft, mi, mph) units are used in the 
 // plane table and in the detailed plane info. Valid values are
 // "nautical", "metric", or "imperial".
-DisplayUnits = "nautical";
+DisplayUnits = "metric";
 
 // -- Map settings ----------------------------------------
 // These settings are overridden by any position information
@@ -26,7 +26,7 @@ DisplayUnits = "nautical";
 DefaultCenterLat = 45.0;
 DefaultCenterLon = 9.0;
 // The google maps zoom level, 0 - 16, lower is further out
-DefaultZoomLvl   = 7;
+DefaultZoomLvl   = 6;
 
 // Center marker. If dump1090 provides a receiver location,
 // that location is used and these settings are ignored.
@@ -34,7 +34,7 @@ DefaultZoomLvl   = 7;
 SiteShow    = false;           // true to show a center marker
 SiteLat     = 45.0;            // position of the marker
 SiteLon     = 9.0;
-SiteName    = "My Radar Site"; // tooltip of the marker
+SiteName    = "ЮЗГУ"; // tooltip of the marker
 
 // -- Marker settings -------------------------------------
 
@@ -45,7 +45,7 @@ ColorByAlt = {
         unknown : { h: 0,   s: 0,   l: 40 },
 
         // HSL for planes that are on the ground:
-        ground  : { h: 15, s: 80, l: 20 },
+        ground  : { h: 120, s: 100, l: 30 },
 
         air : {
                 // These define altitude-to-hue mappings
@@ -89,10 +89,10 @@ ColorByAlt = {
 // };
 
 // Outline color for aircraft icons with an ADS-B position
-OutlineADSBColor = '#000000';
+OutlineADSBColor = '#222222';
 
 // Outline color for aircraft icons with a mlat position
-OutlineMlatColor = '#4040FF';
+OutlineMlatColor = '#222222';
 
 SiteCircles = true; // true to show circles (only shown if the center marker is shown)
 // In miles, nautical miles, or km (depending settings value 'DisplayUnits')
@@ -101,7 +101,7 @@ DefaultSiteCirclesBaseDistance = 100;
 DefaultSiteCirclesInterval = 50;
 
 // Controls page title, righthand pane when nothing is selected
-PageName = "PiAware SkyAware";
+PageName = "ЮЗГУ";
 
 // Show country flags by ICAO addresses?
 ShowFlags = true;
@@ -110,7 +110,7 @@ ShowFlags = true;
 FlagPath = "flags-tiny/";
 
 // Set to true to enable the ChartBundle base layers (US coverage only)
-ChartBundleLayers = true;
+ChartBundleLayers = false;
 
 // Provide a Bing Maps API key here to enable the Bing imagery layer.
 // You can obtain a free key (with usage limits) at

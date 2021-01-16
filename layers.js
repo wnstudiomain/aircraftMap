@@ -5,99 +5,42 @@
 
 function createBaseLayers() {
         var layers = [];
-
         var world = [];
         var us = [];
         var europe = [];
 
-        world.push(new ol.layer.Tile({
-                source: new ol.source.OSM(),
+
+        var layer = new ol.layer.Tile({
+                source: new ol.source.OSM({
+                        url: 'https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=9cb47d50d072496992a29f42e7734972'
+                }),
                 name: 'osm',
                 title: 'OpenStreetMap',
                 type: 'base',
-        }));
+        });
+
+        var enhance = new ol.filter.Colorize({ operation:'luminosity', value: 0.4 });
+        layer.addFilter(enhance);
+
+        console.log(layer)
+
+        world.push(layer)
+
+        var xyz2 = new ol.source.XYZ({
+                url: 'https://maps-cdn.salesboard.biz/styles/klokantech-3d-gl-style/{z}/{x}/{y}.png\n'
+        })
 
         world.push(new ol.layer.Tile({
-                source: new ol.source.XYZ({
-                        "url" : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-	                "attributions" : "Tiles © Esri - Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-                }),
-	        name: 'esri_satellite',
-                title: 'ESRI Satellite',
-                type: 'base',
-	}));
-
-        world.push(new ol.layer.Tile({
-                source: new ol.source.XYZ({
-                        "url" : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-                        "attributions" : "Tiles © Esri - Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-                }),
-                name: 'esri_topo',
-                title: 'ESRI Topographic',
+                source: xyz2,
+                name: 'osm3',
+                title: 'OpenStreetMap3',
                 type: 'base',
         }));
 
         world.push(new ol.layer.Tile({
-                source: new ol.source.XYZ({
-			"url" : "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
-                        "attributions" : "Tiles © Esri - Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-                }),
-                name: 'esri_street',
-                title: 'ESRI Street',
-                type: 'base',
-        }));
-
-        world.push(new ol.layer.Tile({
-                source: new ol.source.XYZ({
-			"url" : "http://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
-			"attributions" : "© <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">OpenStreetMap</a>  contributors."
-                }),
-                name: 'osm_blackwhite',
-                title: 'OSM Black and White',
-                type: 'base',
-        }));
-
-        world.push(new ol.layer.Tile({
-                source: new ol.source.OSM({
-                        "url" : "https://{a-z}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
-                        "attributions" : 'Courtesy of <a href="https://carto.com">CARTO.com</a>'
-                               + ' using data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
-                }),
-                name: 'carto_dark_all',
-                title: 'CARTO.com Dark',
-                type: 'base',
-        }));
-
-        world.push(new ol.layer.Tile({
-                source: new ol.source.OSM({
-                        "url" : "https://{a-z}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
-                        "attributions" : 'Courtesy of <a href="https://carto.com">CARTO.com</a>'
-                               + ' using data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
-                }),
-                name: 'carto_dark_nolabels',
-                title: 'CARTO.com Dark (No Labels)',
-                type: 'base',
-        }));
-
-        world.push(new ol.layer.Tile({
-                source: new ol.source.OSM({
-                        "url" : "https://{a-z}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-                        "attributions" : 'Courtesy of <a href="https://carto.com">CARTO.com</a>'
-                               + ' using data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
-                }),
-                name: 'carto_light_all',
-                title: 'CARTO.com Light',
-                type: 'base',
-        }));
-
-        world.push(new ol.layer.Tile({
-                source: new ol.source.OSM({
-                        "url" : "https://{a-z}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png",
-                        "attributions" : 'Courtesy of <a href="https://carto.com">CARTO.com</a>'
-                               + ' using data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
-                }),
-                name: 'carto_light_nolabels',
-                title: 'CARTO.com Light (No Labels)',
+                source: new ol.source.OSM(),
+                name: 'osm',
+                title: 'OpenStreetMap4',
                 type: 'base',
         }));
 
@@ -268,4 +211,5 @@ function createBaseLayers() {
         }
 
         return layers;
+
 }

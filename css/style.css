@@ -6,7 +6,7 @@ html, body {
 
 #layout_container { 
     display: flex;
-    height: calc(100% - 60px);
+    height: 100%;
 }
 
 #selected_infoblock {
@@ -464,6 +464,7 @@ select.error, textarea.error, input.error {
     display: flex;
     box-shadow: -6px 0px 8px #999999;
     z-index: 99999;
+    display: none;
 }
 
 .flightawareLogo {
@@ -804,6 +805,12 @@ select.error, textarea.error, input.error {
 
 .infoblock-container-small .infoRowFluid {
 	display: block;
+}
+
+.ol-layer canvas {
+    transform: none !important;
+    transform-origin: unset;
+
 }
 
 /* Retina 2x images */

@@ -30,7 +30,7 @@ function PlaneObject(icao) {
         this.nav_modes      = null;
         this.nav_qnh        = null;
         this.rc				= null;
-		
+
         this.nac_p			= null;
         this.nac_v			= null;
         this.nic_baro		= null;
@@ -187,7 +187,7 @@ PlaneObject.prototype.updateTrack = function(receiver_timestamp, last_timestamp)
         est_track = est_track || ((receiver_timestamp - this.last_position_time) > stale_timeout);
 
         var ground_track = (this.altitude === "ground");
-        
+
         if (est_track) {
 
                 if (!lastseg.estimated) {
@@ -209,7 +209,7 @@ PlaneObject.prototype.updateTrack = function(receiver_timestamp, last_timestamp)
 
                 return true;
         }
-        
+
         if (lastseg.estimated) {
                 // We are back to good data (we got two points close in time), switch back to
                 // solid lines.
@@ -224,7 +224,7 @@ PlaneObject.prototype.updateTrack = function(receiver_timestamp, last_timestamp)
                 this.history_size += 2;
                 return true;
         }
-        
+
         if ( (lastseg.ground && this.altitude !== "ground") ||
              (!lastseg.ground && this.altitude === "ground") || this.altitude !== lastseg.altitude ) {
                 //console.log(this.icao + " ground state changed");
@@ -242,7 +242,7 @@ PlaneObject.prototype.updateTrack = function(receiver_timestamp, last_timestamp)
                 this.history_size += 2;
                 return true;
         }
-        
+
         // Add more data to the existing track.
         // We only retain some historical points, at 5+ second intervals,
         // plus the most recent point
@@ -297,7 +297,7 @@ PlaneObject.prototype.getMarkerColor = function() {
 
         var h, s, l;
 
-        var colorArr = this.getAltitudeColor();
+        var colorArr = [197,96,57];
 
         h = colorArr[0];
         s = colorArr[1];
@@ -393,9 +393,12 @@ PlaneObject.prototype.updateIcon = function() {
         var scaleFactor = Math.max(0.2, Math.min(1.2, 0.15 * Math.pow(1.25, ZoomLvl))).toFixed(1);
 
         var col = this.getMarkerColor();
+        //var col = '#0099cc'
         var opacity = 1.0;
         var outline = (this.position_from_mlat ? OutlineMlatColor : OutlineADSBColor);
-        var add_stroke = (this.selected && !SelectedAllPlanes) ? ' stroke="black" stroke-width="1px"' : '';
+        //var outline ='';
+
+        var add_stroke = (this.selected && !SelectedAllPlanes) ? ' stroke="#ffff00;" stroke-width="1px"' : '';
         var baseMarker = getBaseMarker(this.category, this.icaotype, this.typeDescription, this.wtc);
         var rotation = this.track;
         if (rotation === null) {
@@ -419,7 +422,7 @@ PlaneObject.prototype.updateIcon = function() {
                         anchor: [0.5, 0.5],
                         anchorXUnits: 'fraction',
                         anchorYUnits: 'fraction',
-                        scale: 1.2 * scaleFactor,
+                        scale: 2.2 * scaleFactor,
                         imgSize: baseMarker.size,
                         src: svgPathToURI(baseMarker.svg, outline, col, add_stroke),
                         rotation: (baseMarker.noRotate ? 0 : rotation * Math.PI / 180.0),
@@ -481,7 +484,7 @@ PlaneObject.prototype.updateData = function(receiver_timestamp, data) {
         }
 
         // fields with more complex behaviour
-        
+
         if ('type' in data)
                 this.addrtype	= data.type;
         else
@@ -554,7 +557,7 @@ PlaneObject.prototype.updateTick = function(receiver_timestamp, last_timestamp) 
         // recompute seen and seen_pos
         this.seen = receiver_timestamp - this.last_message_time;
         this.seen_pos = (this.last_position_time === null ? null : receiver_timestamp - this.last_position_time);
-        
+
 	// If no packet in over 58 seconds, clear the plane.
 	if (this.seen > 58) {
                 if (this.visible) {
@@ -570,7 +573,7 @@ PlaneObject.prototype.updateTick = function(receiver_timestamp, last_timestamp) 
 			if (this.updateTrack(receiver_timestamp, last_timestamp)) {
                                 this.updateLines();
                                 this.updateMarker(true);
-                        } else { 
+                        } else {
                                 this.updateMarker(false); // didn't move
                         }
                 } else {
@@ -595,7 +598,7 @@ PlaneObject.prototype.updateMarker = function(moved) {
                 this.clearMarker();
                 return;
         }
-        
+
         this.updateIcon();
         if (this.marker) {
                 if (moved) {
