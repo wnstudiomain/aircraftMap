@@ -20,22 +20,22 @@ function createBaseLayers() {
         });
 
         var enhance = new ol.filter.Colorize({ operation:'luminosity', value: 0.4 });
+
         layer.addFilter(enhance);
-
-        console.log(layer)
-
         world.push(layer)
 
         var xyz2 = new ol.source.XYZ({
                 url: 'https://maps-cdn.salesboard.biz/styles/klokantech-3d-gl-style/{z}/{x}/{y}.png\n'
         })
+        var layer1 = new ol.layer.Tile({
+            source: xyz2,
+            name: 'osm3',
+            title: 'OpenStreetMap3',
+            type: 'base',
+        })
 
-        world.push(new ol.layer.Tile({
-                source: xyz2,
-                name: 'osm3',
-                title: 'OpenStreetMap3',
-                type: 'base',
-        }));
+        layer1.addFilter(enhance);
+        world.push(layer1)
 
         world.push(new ol.layer.Tile({
                 source: new ol.source.OSM(),

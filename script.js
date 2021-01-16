@@ -800,6 +800,7 @@ function initialize_map() {
     });
 
 
+
     if (baseCount > 1) {
         OLMap.addControl(new ol.control.LayerSwitcher());
     }
@@ -884,21 +885,27 @@ function initialize_map() {
 
     // Add home marker if requested
     if (SitePosition) {
-        var svg1 = '<svg width="120" height="120" version="1.1" xmlns="http://www.w3.org/2000/svg">'
-            + '<circle cx="60" cy="60" r="60"/>'
-            + '</svg>';
 
         var markerStyle = new ol.style.Style({
             image: new ol.style.Icon({
                 opacity: 1,
-                src: '/dump1090/images/location.svg',
-                scale: 0.08
+                src: '/dump1090/images/placeholder.svg',
+                scale: 0.5
             })
         });
 
         var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat(SitePosition)));
         feature.setStyle(markerStyle);
         StaticFeatures.push(feature);
+
+        var pos = ol.proj.fromLonLat(SitePosition);
+        var marker = new ol.Overlay({
+            position: pos,
+            positioning: 'center-center',
+            element: document.getElementById('loader1'),
+            stopEvent: false
+        });
+        OLMap.addOverlay(marker);
 
         $('#range_ring_column').show();
 
@@ -991,7 +998,7 @@ function createSiteCircleFeatures() {
 
     var circleStyle = function (distance) {
         return new ol.style.Style({
-            fill: null,
+            fill: 'null',
             stroke: new ol.style.Stroke({
                 color: '#aaaaaa',
                 width: 1

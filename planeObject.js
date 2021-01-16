@@ -422,7 +422,7 @@ PlaneObject.prototype.updateIcon = function() {
                         anchor: [0.5, 0.5],
                         anchorXUnits: 'fraction',
                         anchorYUnits: 'fraction',
-                        scale: 2.2 * scaleFactor,
+                        scale: 2 * scaleFactor,
                         imgSize: baseMarker.size,
                         src: svgPathToURI(baseMarker.svg, outline, col, add_stroke),
                         rotation: (baseMarker.noRotate ? 0 : rotation * Math.PI / 180.0),
