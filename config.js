@@ -26,7 +26,12 @@ DisplayUnits = "metric";
 DefaultCenterLat = 45.0;
 DefaultCenterLon = 9.0;
 // The google maps zoom level, 0 - 16, lower is further out
-DefaultZoomLvl   = 6;
+if ($( window ).width() > 767) {
+        DefaultZoomLvl   = 6;
+}
+else {
+        DefaultZoomLvl   = 5;
+}
 
 // Center marker. If dump1090 provides a receiver location,
 // that location is used and these settings are ignored.
@@ -94,7 +99,7 @@ OutlineADSBColor = '#222222';
 // Outline color for aircraft icons with a mlat position
 OutlineMlatColor = '#222222';
 
-SiteCircles = true; // true to show circles (only shown if the center marker is shown)
+SiteCircles = false; // true to show circles (only shown if the center marker is shown)
 // In miles, nautical miles, or km (depending settings value 'DisplayUnits')
 DefaultSiteCirclesCount = 3;
 DefaultSiteCirclesBaseDistance = 100;

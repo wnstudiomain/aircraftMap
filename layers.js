@@ -19,7 +19,7 @@ function createBaseLayers() {
                 type: 'base',
         });
 
-        var enhance = new ol.filter.Colorize({ operation:'luminosity', value: 0.4 });
+        var enhance = new ol.filter.Colorize({ operation:'luminosity', value: 0.35 });
 
         layer.addFilter(enhance);
         world.push(layer)
@@ -34,16 +34,18 @@ function createBaseLayers() {
             type: 'base',
         })
 
+    var layer2 = new ol.layer.Tile({
+        source: new ol.source.OSM(),
+        name: 'osm',
+        title: 'OpenStreetMap4',
+        type: 'base',
+    })
+
+
         layer1.addFilter(enhance);
         world.push(layer1)
 
-        world.push(new ol.layer.Tile({
-                source: new ol.source.OSM(),
-                name: 'osm',
-                title: 'OpenStreetMap4',
-                type: 'base',
-        }));
-
+    world.push(layer2)
 
         if (BingMapsAPIKey) {
                 world.push(new ol.layer.Tile({
