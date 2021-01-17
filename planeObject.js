@@ -551,7 +551,8 @@ PlaneObject.prototype.updateData = function(receiver_timestamp, data) {
         } else {
                 this.speed = null;
         }
-        this.speed = 100;
+        this.speed = data.speed;
+        console.log(data)
 };
 
 

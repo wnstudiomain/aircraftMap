@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
     <link rel="stylesheet" href="jquery/jquery-ui-1.11.4-smoothness.css"/>
     <script src="jquery/jquery-3.0.0.min.js"></script>
     <script src="jquery/jquery-ui-1.11.4.min.js"></script>
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="ol/ol-layerswitcher.css" type="text/css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <script src="ol/ol-layerswitcher.js" type="text/javascript"></script>
 
     <script type="text/javascript" src="config.js?v=4.0"></script>
@@ -98,19 +98,19 @@
         </div>
         <div class="highlightedInfo">
             <div class="infoRow">
-                <div class="infoHeading infoRowTitle">Registration:</div>
+                <div class="infoHeading infoRowTitle">Рейс:</div>
                 <div class="infoData infoRowContent"><span id="highlighted_registration">n/a</span></div>
             </div>
             <div class="infoRow">
-                <div class="infoHeading infoRowTitle">Aircraft Type:</div>
+                <div class="infoHeading infoRowTitle">Тип:</div>
                 <div class="infoData infoRowContent"><span id="higlighted_icaotype">n/a</span></div>
             </div>
             <div class="infoRow">
-                <div class="infoHeading infoRowTitle">Altitude:</div>
+                <div class="infoHeading infoRowTitle">Высота:</div>
                 <div class="infoData infoRowContent"><span id="highlighted_altitude">n/a</span></div>
             </div>
             <div class="infoRow">
-                <div class="infoHeading infoRowTitle">Speed:</div>
+                <div class="infoHeading infoRowTitle">Скорость:</div>
                 <div class="infoData infoRowContent"><span id="highlighted_speed">n/a</span></div>
             </div>
             <div class="infoRow">
@@ -204,9 +204,7 @@
         <!-- <div id="toggle_sidebar_control" class="ol-unselectable ol-control">
             <button id="toggle_sidebar_button" class="hide_sidebar" title="Toggle Sidebar"></button>
         </div>-->
-        <div id="expand_sidebar_control" class="ol-unselectable ol-control">
-            <button id="expand_sidebar_button" title="Expand Sidebar"></button>
-        </div>
+
         <div id="altitude_chart" class="ol-unselectable ol-control altitudeFeet">
             <button id="altitude_chart_button"></button>
         </div>
@@ -219,33 +217,37 @@
             <div id="sidebar-table">
                 <div id="dump1090_infoblock">
                     <table style="width: 100%">
-                        <tr class="infoblock_heading">
-                            <td>
-                                <div class="button buttonTable" id="show_map_button"><span
-                                        class="buttonText">Show Map</span></div>
-                            </td>
-                            <td style="text-align: right">
-                                <a href="https://github.com/flightaware/dump1090" id="dump1090_version"
-                                   target="_blank"></a>
-                            </td>
-                        </tr>
+
 
                         <tr class="infoblock_body">
-                            <td><span class="infoBlockTitleText">Total Aircraft:</span> <span
+                            <td><span class="infoBlockTitleText">Бортов всего:</span> <span
                                     id="dump1090_total_ac">n/a</span></td>
-                            <td><span class="infoBlockTitleText">Messages:</span> <span
+                            <td><span class="infoBlockTitleText">Прием сообщений:</span> <span
                                     id="dump1090_message_rate">n/a</span>/sec
                             </td>
                         </tr>
 
                         <tr class="infoblock_body">
-                            <td><span class="infoBlockTitleText">With Positions:</span> <span
+                            <td><span class="infoBlockTitleText">С позициями:</span> <span
                                     id="dump1090_total_ac_positions">n/a</span></td>
-                            <td><span class="infoBlockTitleText">History:</span> <span
+                            <td><span class="infoBlockTitleText">Накоплено:</span> <span
                                     id="dump1090_total_history">n/a</span> positions
                             </td>
                         </tr>
                     </table>
+                    <div id="close-sidebar" class="close-sidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                            <defs>
+                                <style>
+                                    .cccls-1 {
+                                        fill: #002F5D;
+                                        fill-rule: evenodd;
+                                    }
+                                </style>
+                            </defs>
+                            <path data-name="Rounded Rectangle 114 copy 3" class="cccls-1" d="M334.411,138l6.3,6.3a1,1,0,0,1,0,1.414,0.992,0.992,0,0,1-1.408,0l-6.3-6.306-6.3,6.306a1,1,0,0,1-1.409-1.414l6.3-6.3-6.293-6.3a1,1,0,0,1,1.409-1.414l6.3,6.3,6.3-6.3A1,1,0,0,1,340.7,131.7Z" transform="translate(-325 -130)"></path>
+                        </svg>
+                    </div>
                 </div> <!-- dump1090_infoblock -->
 
                 <!-- <form id="altitude_filter_form">
@@ -353,29 +355,29 @@
                 </div>
 
                 <div id="planes_table_container">
-                    <div id="planes_table">
-                        <table id="tableinfo" style="width: 100%">
+                    <div id="planes_table" class="table-responsive">
+                        <table id="tableinfo" class="table">
                             <thead class="aircraft_table_header">
                             <tr>
                                 <td id="icao" onclick="sortByICAO();">ICAO</td>
                                 <td id="flag" onclick="sortByCountry()"><!-- column for flag image --></td>
-                                <td id="flight" onclick="sortByFlight();"> Ident</td>
+                                <td id="flight" onclick="sortByFlight();">Рейс</td>
                                 <td id="registration" onclick="sortByRegistration();">Registration</td>
                                 <td id="aircraft_type" onclick="sortByAircraftType();"> Aircraft type</td>
-                                <td id="squawk" onclick="sortBySquawk();">Squawk</td>
-                                <td id="altitude" onclick="sortByAltitude();">Altitude (<span
+                                <td id="squawk" onclick="sortBySquawk();">Код</td>
+                                <td id="altitude" onclick="sortByAltitude();">Высота (<span
                                         class="altitudeUnit"></span>)
                                 </td>
-                                <td id="speed" onclick="sortBySpeed();">Speed (<span class="speedUnit"></span>)</td>
+                                <td id="speed" onclick="sortBySpeed();">Скорость (<span class="speedUnit"></span>)</td>
                                 <td id="vert_rate" onclick="sortByVerticalRate();">Vertical Rate (<span
                                         class="verticalRateUnit"></span>)
                                 </td>
-                                <td id="distance" onclick="sortByDistance();">Distance (<span
+                                <td id="distance" onclick="sortByDistance();">Расстояние (<span
                                         class="distanceUnit"></span>)
                                 </td>
-                                <td id="track" onclick="sortByTrack();">Heading</td>
-                                <td id="msgs" onclick="sortByMsgs();">Msgs</td>
-                                <td id="seen" onclick="sortBySeen();">Age</td>
+                                <td id="track" onclick="sortByTrack();">Курс</td>
+                                <td id="msgs" onclick="sortByMsgs();">Сообщений</td>
+                                <td id="seen" onclick="sortBySeen();">Обновлено</td>
                                 <td id="rssi" onclick="sortByRssi();">RSSI</td>
                                 <td id="lat" onclick="sortByLatitude();">Latitude</td>
                                 <td id="lon" onclick="sortByLongitude();">Longitude</td>
@@ -394,7 +396,7 @@
                                 <td>AIRCRAFT_TYPE</td>
                                 <td style="text-align: right">SQUAWK</td>
                                 <td style="text-align: right">ALTITUDE</td>
-                                <td style="text-align: right">SPEED</td>
+                                <td style="text-align: right">123</td>
                                 <td style="text-align: right">VERT_RATE</td>
                                 <td style="text-align: right">DISTANCE</td>
                                 <td style="text-align: right">TRACK</td>
@@ -418,7 +420,7 @@
                             <div class="legendBox mlat"></div>
                             <div class="legendTitle">MLAT</div>
                             <div class="legendBox other"></div>
-                            <div class="legendTitle">Other</div>
+                            <div class="legendTitle">Другое</div>
                             <div class="legendBox tisb"></div>
                             <div class="legendTitle">TIS-B</div>
                         </div>
@@ -433,7 +435,7 @@
         <div id="selected_infoblock" class="hidden">
 
             <div id="splitter-infoblock" class="ui-resizable-handle ui-resizable-n"></div>
-            <div id="close-button">Close</div>
+            <div id="close-button">Закрыть</div>
             <div class="infoblock-container">
 
                 <div class="highlightedTitle">
@@ -449,16 +451,16 @@
                     <span id="selected_flightaware_link" class=""></span>
                     <div class="infoRow removePadding">
                         <div class="infoHeading infoRowFluid"><span
-                                title="The alphanumeric registration code assigned by the country in which the aircraft is registered.">Registration</span>:
+                                title="The alphanumeric registration code assigned by the country in which the aircraft is registered.">Зарегистрировано</span>:
                         </div>
                         <div class="infoData infoRowFluid"><span id="selected_registration">n/a</span></div>
                     </div>
                     <div id="infoblock_country" class="infoRow removePadding">
-                        <div class="infoHeading infoRowFluid">Country of registration:</div>
+                        <div class="infoHeading infoRowFluid">Страна регистрации:</div>
                         <div class="infoData infoRowFluid"><span id="selected_country">n/a</span></div>
                     </div>
                     <div class="infoHeading infoRowFluid fourColumnSection1">
-                        Aircraft Type:
+                        Тип самолета:
                     </div>
                     <div class="infoData infoRowFluid fourColumnSection2">
                         <span id="selected_icaotype"></span> <span class="lightblue-link"
@@ -468,7 +470,7 @@
 
                 <div class="sectionTitle">
                     <div class="section-title-content">
-                        Location
+                        Местоположение
                     </div>
                 </div>
                 <div class="infoBlockSection">
@@ -596,7 +598,7 @@
                 <div class="infoBlockSection">
                     <div class="infoRowLine">
                         <div class="infoHeading infoRowFluid fourColumnSection1">
-                            <span title="Direction the aircraft is traveling over the ground.">Ground Track</span>:
+                            <span title="Direction the aircraft is traveling over the ground.">Траектория полета</span>:
                         </div>
                         <div class="infoData infoRowFluid fourColumnSection2">
                             <span id="selected_track">n/a</span>

@@ -289,6 +289,7 @@ function initialize() {
     // Set up event handlers for buttons
     $("#toggle_sidebar_button").click(toggleSidebarVisibility);
     $("#expand_sidebar_button").click(expandSidebar);
+    $('#close-sidebar').click(toggleSidebarVisibility);
     $("#show_map_button").click(showMap);
 
     // Set initial element visibility
@@ -1456,7 +1457,7 @@ function refreshTableInfo() {
             tableplane.tr.cells[4].textContent = (tableplane.icaotype !== null ? tableplane.icaotype : "");
             tableplane.tr.cells[5].textContent = (tableplane.squawk !== null ? tableplane.squawk : "");
             tableplane.tr.cells[6].innerHTML = format_altitude_brief(tableplane.altitude, tableplane.vert_rate, DisplayUnits);
-            tableplane.tr.cells[7].textContent = format_speed_brief(tableplane.gs, DisplayUnits);
+            tableplane.tr.cells[7].textContent = format_speed_brief(tableplane.speed, DisplayUnits);
             tableplane.tr.cells[8].textContent = format_vert_rate_brief(tableplane.vert_rate, DisplayUnits);
             tableplane.tr.cells[9].textContent = format_distance_brief(tableplane.sitedist, DisplayUnits);
             tableplane.tr.cells[10].textContent = format_track_brief(tableplane.track);

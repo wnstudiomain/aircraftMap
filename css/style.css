@@ -23,13 +23,17 @@ html, body {
 	height: 100%;
 }
 #sidebar_canvas { 
-    	padding: 10px;
+    	padding: 15px;
 	overflow: auto;
+
+}
+.close-sidebar {
+    display: none;
 }
 #sidebar_container {
 	display: flex;
 	flex-direction: column;
-    width: 500px;
+    width: 640px;
 	left: 0 !important;
 	height: 100%;
 }
@@ -44,16 +48,6 @@ html, body {
     position: absolute;
     width: 100%;
     height: 100%;
-}
-
-#planes_table_container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-#planes_table {
-    overflow-x: scroll;
 }
 
 #column_select {
@@ -275,6 +269,7 @@ div#loader { z-index: 99; position: absolute; left: 0; top: 0; bottom: 0; right:
     font-size: smaller;
     padding: 5px;
     text-align: center;
+    font-weight: 600;
 }
 
 .verticalRateTriangle {
@@ -532,7 +527,9 @@ select.error, textarea.error, input.error {
 .buttonTable {
     margin-bottom: 5px;
 }
-
+#planes_table_container {
+    margin-top: 10px;
+}
 .settingsContainer {
     padding-right: 60px;
     padding-left: 2px;
@@ -807,14 +804,30 @@ select.error, textarea.error, input.error {
 .header {
     display: none;
 }
+#column_select {
+    display: none;
+}
+
 @media screen and (max-width: 767px) {
     #sidebar_container {
         display: none;
     }
-    #layout_container {
-
+    #tableinfo {
         width: 100%;
     }
+    #sidebar_container {
+        width: 100%;
+    }
+
+    #planes_table {
+        margin-top: 10px;
+    }
+#tableinfo {
+    width: 100%;
+}
+#dump1090_infoblock {
+    position: relative;
+}
     .nav-bottom {
         display: flex;
         align-items: center;
@@ -836,6 +849,13 @@ select.error, textarea.error, input.error {
         padding: 10px 12px;
         background: rgba(255,255,255,.6);
         align-items: center;
+    }
+    .close-sidebar {
+        display: block;
+        z-index: 1;
+        position: absolute;
+        right: 0;
+        top: 0;
     }
     .header-wrapper {
         display: flex;
@@ -868,6 +888,15 @@ select.error, textarea.error, input.error {
         font-weight: 700;
         margin-left: 15px;
         font-size: 20px;
+    }
+    #sidebar-table {
+        overflow: hidden;
+    }
+    #sidebar_canvas {
+        padding: 15px;
+        width: 100%;
+        overflow: hidden;
+
     }
     .nav-bottom > div {
         flex: 1;
