@@ -470,7 +470,7 @@ PlaneObject.prototype.updateData = function(receiver_timestamp, data) {
 
         var fields = ["alt_baro", "alt_geom", "gs", "ias", "tas", "track",
                       "track_rate", "mag_heading", "true_heading", "mach",
-					  "roll", "nav_heading", "nav_modes",
+					  "roll", "nav_heading", "nav_modes","speed","altitude",
 					  "nac_p", "nac_v", "nic_baro", "sil_type", "sil",
                       "nav_qnh", "baro_rate", "geom_rate", "rc",
                       "squawk", "category", "version"];
@@ -514,8 +514,8 @@ PlaneObject.prototype.updateData = function(receiver_timestamp, data) {
         }
 
         // Pick an altitude
-        if ('alt_baro' in data) {
-                this.altitude = data.alt_baro;
+        if ('altitude' in data) {
+                this.altitude = data.altitude;
         } else if ('alt_geom' in data) {
                 this.altitude = data.alt_geom;
         } else {
@@ -535,15 +535,15 @@ PlaneObject.prototype.updateData = function(receiver_timestamp, data) {
         // geometric rate is generally more reliable (smoothed etc)
         if ('geom_rate' in data) {
                 this.vert_rate = data.geom_rate;
-        } else if ('baro_rate' in data) {
-                this.vert_rate = data.baro_rate;
+        } else if ('vert_rate' in data) {
+                this.vert_rate = data.vert_rate;
         } else {
                 this.vert_rate = null;
         }
 
         // Pick a speed
-        if ('gs' in data) {
-                this.speed = data.gs;
+        if ('speed' in data) {
+                this.speed = data.speed;
         } else if ('tas' in data) {
                 this.speed = data.tas;
         } else if ('ias' in data) {
@@ -551,7 +551,9 @@ PlaneObject.prototype.updateData = function(receiver_timestamp, data) {
         } else {
                 this.speed = null;
         }
+        this.speed = 100;
 };
+
 
 PlaneObject.prototype.updateTick = function(receiver_timestamp, last_timestamp) {
         // recompute seen and seen_pos

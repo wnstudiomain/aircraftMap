@@ -11,19 +11,34 @@ function createBaseLayers() {
 
 
         var layer = new ol.layer.Tile({
-                source: new ol.source.XYZ({ url: 'http://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}' }),
+                source: new ol.source.XYZ({
+                    url: 'https://tile.osmand.net/hd/{z}/{x}/{y}.png',
+                    crossOrigin: null,
+                    tilePixelRatio: 3,
+                    maxZoom: 19,
+                    attributions: ol.source.OSM.ATTRIBUTION,
+                    attributionsCollapsible: false
+                }),
                 name: 'osm',
                 title: 'OpenStreetMap',
                 type: 'base'
         });
 
-        var enhance = new ol.filter.Colorize({ operation:'luminosity', value: 0.3 });
+        var enhance = new ol.filter.Colorize({ operation:'luminosity', value: 0.4 });
+        var enhance1 = new ol.filter.Colorize({ operation:'hue', value: 0.3 });
 
         layer.addFilter(enhance);
+    layer.addFilter(enhance1);
+
         world.push(layer)
 
         var xyz2 = new ol.source.XYZ({
-                url: 'https://maps-cdn.salesboard.biz/styles/klokantech-3d-gl-style/{z}/{x}/{y}.png\n'
+                url: 'https://maps-cdn.salesboard.biz/styles/klokantech-3d-gl-style/{z}/{x}/{y}.png',
+            crossOrigin: null,
+            tilePixelRatio: 2,
+            maxZoom: 19,
+            attributions: ol.source.OSM.ATTRIBUTION,
+            attributionsCollapsible: false
         })
         var layer1 = new ol.layer.Tile({
             source: xyz2,

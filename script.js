@@ -785,7 +785,6 @@ function initialize_map() {
 
     OLMap = new ol.Map({
         target: 'map_canvas',
-        pixelRatio: 2,
         layers: layers,
         view: new ol.View({
             center: ol.proj.fromLonLat([CenterLon, CenterLat]),

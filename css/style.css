@@ -126,17 +126,6 @@ html, body {
     right: -3px;
 }
 
-#toggle_sidebar_button {
-    cursor: pointer;
-    float: right;
-    width: 24px;
-    height: 25px;
-    background-size: 24px 25px;
-    background-repeat: no-repeat;
-    background-position: 0px;
-    background-color: transparent;
-    border: none;
-}
 
 #toggle_sidebar_button.show_sidebar {
     background-image: url("images/table-icon.png");
@@ -834,7 +823,10 @@ select.error, textarea.error, input.error {
         left: 0;
         right: 0;
         width: 100%;
-        background: rgba(0,0,0,.5);
+        background: rgba(51,153,255,.7);
+    }
+    .ol-scale-line {
+        background: rgba(51,153,255,.5) !important;
     }
     .header {
         display: flex;
@@ -879,27 +871,26 @@ select.error, textarea.error, input.error {
     }
     .nav-bottom > div {
         flex: 1;
-        padding: 14px;
+        padding: 14px 0;
         display: flex;
         justify-content: center;
         align-items: center;
     }
     .nav-bottom .logo {
-        flex-basis: 70px;
+        flex-basis: 50px;
     }
     .nav-bottom .circle-logo {
-        width: 92px;
-        height: 92px;
+        width: 80px;
+        height: 80px;
         position: absolute;
-        background: rgba(0,0,0,.99);
+        background: rgba(255,255,255,.99);
         border-radius: 100%;
         display: flex;
-        bottom: -20px;
+        bottom: -15px;
         align-items: center;
-
+        border: solid 2px rgba(51,153,255,1);
         justify-content: center;
     }
-
     .nav-bottom > div.logo img {
         height: 50px;
         width: auto;
