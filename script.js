@@ -785,11 +785,12 @@ function initialize_map() {
 
     OLMap = new ol.Map({
         target: 'map_canvas',
-        pixelRatio: 1,
+        pixelRatio: 2,
         layers: layers,
         view: new ol.View({
             center: ol.proj.fromLonLat([CenterLon, CenterLat]),
-            zoom: ZoomLvl
+            zoom: ZoomLvl,
+            //resolutions: layers.getSource().getTileGrid().getResolutions()
         }),
         controls: [new ol.control.Zoom(),
             new ol.control.Rotate(),
@@ -830,6 +831,7 @@ function initialize_map() {
             Planes[plane].updateMarker(false);
         }
         ;
+
     });
 
     OLMap.on(['click', 'dblclick'], function (evt) {

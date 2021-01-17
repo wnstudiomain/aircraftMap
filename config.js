@@ -27,10 +27,10 @@ DefaultCenterLat = 45.0;
 DefaultCenterLon = 9.0;
 // The google maps zoom level, 0 - 16, lower is further out
 if ($( window ).width() > 767) {
-        DefaultZoomLvl   = 6;
+        DefaultZoomLvl   = 7;
 }
 else {
-        DefaultZoomLvl   = 5;
+        DefaultZoomLvl   = 6.5;
 }
 
 // Center marker. If dump1090 provides a receiver location,

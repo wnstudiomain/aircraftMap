@@ -11,15 +11,13 @@ function createBaseLayers() {
 
 
         var layer = new ol.layer.Tile({
-                source: new ol.source.OSM({
-                        url: 'https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=9cb47d50d072496992a29f42e7734972'
-                }),
+                source: new ol.source.XYZ({ url: 'http://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}' }),
                 name: 'osm',
                 title: 'OpenStreetMap',
-                type: 'base',
+                type: 'base'
         });
 
-        var enhance = new ol.filter.Colorize({ operation:'luminosity', value: 0.35 });
+        var enhance = new ol.filter.Colorize({ operation:'luminosity', value: 0.3 });
 
         layer.addFilter(enhance);
         world.push(layer)
@@ -34,18 +32,11 @@ function createBaseLayers() {
             type: 'base',
         })
 
-    var layer2 = new ol.layer.Tile({
-        source: new ol.source.OSM(),
-        name: 'osm',
-        title: 'OpenStreetMap4',
-        type: 'base',
-    })
 
 
         layer1.addFilter(enhance);
         world.push(layer1)
-    layer2.addFilter(enhance);
-    world.push(layer2)
+
 
         if (BingMapsAPIKey) {
                 world.push(new ol.layer.Tile({
