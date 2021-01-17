@@ -44,7 +44,7 @@ function createBaseLayers() {
 
         layer1.addFilter(enhance);
         world.push(layer1)
-
+    layer2.addFilter(enhance);
     world.push(layer2)
 
         if (BingMapsAPIKey) {
