@@ -16,6 +16,7 @@ var HighlightedPlane = null;
 var FollowSelected = false;
 var infoBoxOriginalPosition = {};
 var customAltitudeColors = true;
+var airData = false;
 
 var SpecialSquawks = {
     '7500': {cssClass: 'squawk7500', markerColor: 'rgb(255, 85, 85)', text: 'Aircraft Hijacking'},
@@ -149,6 +150,7 @@ function processReceiverUpdate(data) {
                 }
                 selectPlaneByHex(h, true);
                 adjustSelectedInfoBlockPosition();
+
                 evt.preventDefault();
             }.bind(undefined, hex));
 
@@ -446,7 +448,6 @@ function start_load_history() {
 }
 
 function load_history_item(i) {
-    console.log("Loading history #" + i);
     $("#loader_progress").attr('value', i);
 
     $.ajax({
@@ -491,11 +492,11 @@ function end_load_history() {
         // Process history
         for (var h = 0; h < PositionHistoryBuffer.length; ++h) {
             now = PositionHistoryBuffer[h].now;
-            console.log("Applying history " + (h + 1) + "/" + PositionHistoryBuffer.length + " at: " + now);
+            //console.log("Applying history " + (h + 1) + "/" + PositionHistoryBuffer.length + " at: " + now);
             processReceiverUpdate(PositionHistoryBuffer[h]);
 
             // update track
-            console.log("Updating tracks at: " + now);
+            //console.log("Updating tracks at: " + now);
             for (var i = 0; i < PlanesOrdered.length; ++i) {
                 var plane = PlanesOrdered[i];
                 plane.updateTrack(now, last);
@@ -849,6 +850,7 @@ function initialize_map() {
             selectPlaneByHex(hex, (evt.type === 'dblclick'));
             adjustSelectedInfoBlockPosition();
             evt.stopPropagation();
+            setPlaneICAO();
         } else {
             deselectAllPlanes();
             evt.stopPropagation();
@@ -1663,7 +1665,7 @@ function sortBy(id, sc, se) {
 }
 
 function selectPlaneByHex(hex, autofollow) {
-    //console.log("select: " + hex);
+    console.log("select: " + hex);
     // If SelectedPlane has something in it, clear out the selected
     if (SelectedAllPlanes) {
         deselectAllPlanes();
@@ -1963,11 +1965,9 @@ function adjustSelectedInfoBlockPosition() {
     }
 
     var selectedPlane = Planes[SelectedPlane];
-
     if (selectedPlane === undefined || selectedPlane === null || selectedPlane.marker === undefined || selectedPlane.marker === null) {
         return;
     }
-
     try {
         // Get marker position
         var marker = selectedPlane.marker;
@@ -2469,3 +2469,38 @@ function toggleAllColumns(switchToggle) {
 
     localStorage.setItem('selectAllColumnsCheckbox', selectAllColumnsCheckbox);
 }
+function setPlaneICAO() {
+    var plane = false;
+    if (typeof SelectedPlane !== 'undefined' &&SelectedPlane != null) {
+        plane = Planes[SelectedPlane];
+    }
+    var planFlight = plane.flight
+    //getPlaneData(planICAO)
+    getPlaneData(planFlight)
+}
+
+function getPlaneData(planFlight) {
+    $.ajax({
+        url: 'http://api.aviationstack.com/v1/flights',
+        data: {
+            access_key: '2498ca1f7fa59b3d6c6a3f625fdc57d1',
+            flight_icao: planFlight
+        },
+        dataType: 'json',
+        success: function(apiResponse) {
+            console.log(apiResponse.data[0])
+            var Adata = apiResponse.data[0],
+                airline = Adata.airline.name,
+                arrivalAiroport = Adata.arrival.airport,
+                arrivalScheduled = Adata.arrival.scheduled,
+                arrivalEstimated = Adata.arrival.estimated,
+                arrivalTimezone = Adata.arrival.timezone,
+                departureScheduled = Adata.departure.scheduled,
+                departureActual = Adata.departure.actual,
+                departureAirport = Adata.departure.airport,
+                departureTimezone = Adata.departure.timezone;
+            console.log(arrivalAiroport)
+        }
+    });
+}
+
