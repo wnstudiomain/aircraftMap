@@ -2474,33 +2474,62 @@ function setPlaneICAO() {
     if (typeof SelectedPlane !== 'undefined' &&SelectedPlane != null) {
         plane = Planes[SelectedPlane];
     }
-    var planFlight = plane.flight
-    //getPlaneData(planICAO)
+    var planFlight = plane.flight,
+        planICAO = plane.icao
+
     getPlaneData(planFlight)
+    //getPlaneImage(planICAO)
 }
 
 function getPlaneData(planFlight) {
     $.ajax({
-        url: 'http://api.aviationstack.com/v1/flights',
+        url: 'http://data-live.flightradar24.com/clickhandler/?version=1.5',
         data: {
-            access_key: '2498ca1f7fa59b3d6c6a3f625fdc57d1',
-            flight_icao: planFlight
+            flight: '26a13dea',
+            //limit: 5
+        },
+        type: 'GET',
+        crossDomain: true,
+        headers: {
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Host': 'https://www.flightradar24.com'
         },
         dataType: 'json',
         success: function(apiResponse) {
-            console.log(apiResponse.data[0])
-            var Adata = apiResponse.data[0],
-                airline = Adata.airline.name,
-                arrivalAiroport = Adata.arrival.airport,
-                arrivalScheduled = Adata.arrival.scheduled,
-                arrivalEstimated = Adata.arrival.estimated,
-                arrivalTimezone = Adata.arrival.timezone,
-                departureScheduled = Adata.departure.scheduled,
-                departureActual = Adata.departure.actual,
-                departureAirport = Adata.departure.airport,
-                departureTimezone = Adata.departure.timezone;
-            console.log(arrivalAiroport)
+            /*    if (apiResponse.data.length) {
+                    var Adata = apiResponse.data[0];
+                    var airline = Adata.airline.name,
+                        arrivalAiroport = Adata.arrival.airport,
+                        arrivalScheduled = Adata.arrival.scheduled,
+                        arrivalEstimated = Adata.arrival.estimated,
+                        arrivalTimezone = Adata.arrival.timezone,
+                        departureScheduled = Adata.departure.scheduled,
+                        departureActual = Adata.departure.actual,
+                        departureAirport = Adata.departure.airport,
+                        departureTimezone = Adata.departure.timezone;
+                console.log(apiResponse.data)
+            }*/
+            console.log(apiResponse)
         }
     });
 }
 
+function getPlaneImage(planICAO) {
+    $.ajax({
+        url: 'https://www.airport-data.com/api/ac_thumb.json',
+        crossDomain: true,
+        dataType: 'json',
+        contentType: "application/json",
+        type: 'GET',
+        data: {
+            m: planICAO,
+            n: '1'
+        },
+        dataType: 'json',
+        crossDomain: true,
+        success: function(apiResponse) {
+            console.log(apiResponse)
+        }
+    });
+}
