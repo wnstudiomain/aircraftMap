@@ -28,7 +28,7 @@ var SpecialSquawks = {
 var CenterLat, CenterLon, ZoomLvl, MapType, SiteCirclesCount, SiteCirclesBaseDistance, SiteCirclesInterval;
 
 var Dump1090Version = "unknown version";
-var RefreshInterval = 1000;
+var RefreshInterval = 3000000;
 
 var PlaneRowTemplate = null;
 
@@ -222,7 +222,7 @@ function initialize() {
     // Set page basics
     document.title = PageName;
 
-    flightFeederCheck();
+    //flightFeederCheck();
 
     PlaneRowTemplate = document.getElementById("plane_row_template");
 
@@ -525,6 +525,8 @@ function end_load_history() {
     reaper();
 
     // Setup our timer to poll from the server.
+    RefreshInterval = 1000;
+    console.log(RefreshInterval)
     window.setInterval(fetchData, RefreshInterval);
     window.setInterval(reaper, 60000);
 
@@ -803,7 +805,6 @@ function initialize_map() {
     });
 
 
-
     if (baseCount > 1) {
         OLMap.addControl(new ol.control.LayerSwitcher());
     }
@@ -848,9 +849,10 @@ function initialize_map() {
             });
         if (hex) {
             selectPlaneByHex(hex, (evt.type === 'dblclick'));
+            doAjax(Planes[SelectedPlane]);
             adjustSelectedInfoBlockPosition();
             evt.stopPropagation();
-            setPlaneICAO();
+            $('.air-menu').addClass('visible');
         } else {
             deselectAllPlanes();
             evt.stopPropagation();
@@ -957,7 +959,7 @@ function initialize_map() {
     // NB: altitudes are in _meters_, you can specify a list of altitudes
 
     // kick off an ajax request that will add the rings when it's done
-    var request = $.ajax({
+    /*var request = $.ajax({
         url: 'upintheair.json',
         timeout: 5000,
         cache: true,
@@ -991,7 +993,7 @@ function initialize_map() {
 
     request.fail(function (jqxhr, status, error) {
         // no rings available, do nothing
-    });
+    }); */
 }
 
 function createSiteCircleFeatures() {
@@ -2251,7 +2253,7 @@ function toggleLayer(element, layer) {
 }
 
 // check status.json if it has a serial number for a flightfeeder
-function flightFeederCheck() {
+/*function flightFeederCheck() {
     $.ajax('/status.json', {
         success: function (data) {
             if (data.type === "flightfeeder") {
@@ -2260,7 +2262,7 @@ function flightFeederCheck() {
             }
         }
     })
-}
+}*/
 
 // updates the page to replace piaware with flightfeeder references
 function updatePiAwareOrFlightFeeder() {
@@ -2468,68 +2470,130 @@ function toggleAllColumns(switchToggle) {
     }
 
     localStorage.setItem('selectAllColumnsCheckbox', selectAllColumnsCheckbox);
+
 }
-function setPlaneICAO() {
+
+async function doAjax(SelectedPlane) {
     var plane = false;
-    if (typeof SelectedPlane !== 'undefined' &&SelectedPlane != null) {
-        plane = Planes[SelectedPlane];
+    if (typeof SelectedPlane !== 'undefined' && SelectedPlane != null) {
+        plane = SelectedPlane;
     }
-    var planFlight = plane.flight,
-        planICAO = plane.icao
-
-    getPlaneData(planFlight)
-    //getPlaneImage(planICAO)
-}
-
-function getPlaneData(planFlight) {
-    $.ajax({
-        url: 'http://data-live.flightradar24.com/clickhandler/?version=1.5',
+    var planFlight = String(plane.flight).trim(),
+        planICAO = plane.icao;
+        console.log (planFlight)
+    let image = await $.ajax({
+        url: 'https://wnstudio.ru/air3.php',
+        type: 'POST',
         data: {
-            flight: '26a13dea',
-            //limit: 5
-        },
-        type: 'GET',
-        crossDomain: true,
-        headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Host': 'https://www.flightradar24.com'
+            flight: planFlight,
         },
         dataType: 'json',
-        success: function(apiResponse) {
-            /*    if (apiResponse.data.length) {
-                    var Adata = apiResponse.data[0];
-                    var airline = Adata.airline.name,
-                        arrivalAiroport = Adata.arrival.airport,
-                        arrivalScheduled = Adata.arrival.scheduled,
-                        arrivalEstimated = Adata.arrival.estimated,
-                        arrivalTimezone = Adata.arrival.timezone,
-                        departureScheduled = Adata.departure.scheduled,
-                        departureActual = Adata.departure.actual,
-                        departureAirport = Adata.departure.airport,
-                        departureTimezone = Adata.departure.timezone;
-                console.log(apiResponse.data)
-            }*/
-            console.log(apiResponse)
+        success: function (response) {
+            console.log (planFlight)
+            console.log(response)
         }
     });
+    console.log(image);
+    var aircraft = image.aircraft;
+    var aircraftHex = image.aircraft.hex;
+    var aircraftFlightM = image.identification.callsign;
+    var aircraftFlight = image.identification.number.default;
+    var aircraftImage = aircraft.images.medium[0];
+    var aircraftModel = aircraft.model.text;
+    var aircraftReg = aircraft.registration;
+    var aircraftAirportD = image.airport.destination;
+    var aircraftAirportA = image.airport.origin;
+    var aircraftAirportDCity = aircraftAirportD.position.region.city;
+    var aircraftAirportACity = aircraftAirportA.position.region.city;
+    var aircraftAirportAIata = aircraftAirportA.code.iata;
+    var aircraftAirportDIata = aircraftAirportD.code.iata;
+    var aircraftAirline = image.airline.name;
+    var iconDelayed = image.status.icon;
+    var aircraftAirportBaggage = image.airport.destination.info.baggage;
+    var aircraftAirportTerminal = image.airport.destination.info.terminal;
+    var aircraftAirportGate = image.airport.destination.info.gate;
+    var aircraftAirportATimezoneHours = aircraftAirportA.timezone.offsetHours;
+    var aircraftAirportDTimezoneHours = aircraftAirportD.timezone.offsetHours;
+    var offsetHoursANumber = (parseInt(aircraftAirportATimezoneHours, 10));
+    var offsetHoursDNumber = (parseInt(aircraftAirportDTimezoneHours, 10));
+    var utcOffsetHoursD = (offsetHoursDNumber < 0) ? offsetHoursDNumber + ':00' : '+' + offsetHoursDNumber + ':00';
+    var utcOffsetHoursA = (offsetHoursANumber < 0) ? offsetHoursANumber + ':00' : '+' + offsetHoursANumber + ':00';
+    var actualEstimatedArrival = getTime(image.time.estimated.arrival, image.airport.destination.timezone.offset);
+    var actualScheduledArrival = getTime(image.time.scheduled.arrival, image.airport.destination.timezone.offset);
+    var actualScheduledDeparture = getTime(image.time.scheduled.departure, image.airport.origin.timezone.offset);
+    var actualRealDeparture = getTime(image.time.real.departure, image.airport.origin.timezone.offset);
+    var lat1 = image.airport.destination.position.latitude;
+    var lon1 = image.airport.destination.position.longitude;
+    var lat2 = image.airport.origin.position.latitude;
+    var lon2 = image.airport.origin.position.longitude;
+    var distance = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
+
+    innerData()
+
+    function innerData() {
+        $('.menu-title').html('<h2>' + aircraftFlight + '</h2><h4>/' + aircraftFlightM + '</h4');
+        $('.airline-name').html('<span>' + aircraftAirline + '</span>');
+        $('.airportIata').html('<div>' + aircraftAirportAIata + '</div><div>' + aircraftAirportDIata + '</div>');
+        $('.airportCity').html('<div>' + aircraftAirportACity + '</div><div>' + aircraftAirportDCity + '</div>');
+        $('.airportTime').html('<div>UTC ' + utcOffsetHoursA + '</div><div>UTC ' + utcOffsetHoursD + '</div>')
+        $('.timetable-sheduled').html('<div> По расписанию <span>' + actualScheduledDeparture + '</span></div><div> По расписанию <span>' + actualScheduledArrival + '</span></div>')
+        $('.timetable-actual').html('<div> Фактическое <span>' + actualRealDeparture + '</span></div><div> Предполагаемое <span>' + actualEstimatedArrival + '</span></div>');
+        $('.all-distance').html('<div>Дальность полёта ' + distance + ' км</div>');
+        $('#flight-text').text(aircraftFlight);
+        $('.arrival-info').html('<div>Терминал ' + aircraftAirportTerminal + '</div><div>Гейт ' + aircraftAirportGate + '</div><div> Багажная карусель ' + aircraftAirportBaggage + '</div>');
+        $('#aircraft-type').text(aircraftModel);
+        $('#aircraft-reg').text(aircraftReg);
+    }
+
+    console.log(image);
+
+    function getTime(time, offsetTime) {
+        let unix_timestamp = time;
+        let unix_utc_time = unix_timestamp - 10800;
+        let offset = offsetTime;
+        let offsetNumber = (parseInt(offset, 10))
+        let summ = (offsetNumber < 0) ? unix_utc_time - Math.abs(offsetNumber) : unix_utc_time + Math.abs(offsetNumber);
+        let date = new Date(summ * 1000);
+        let hours = date.getHours();
+        let minutes = "0" + date.getMinutes();
+        let seconds = "0" + date.getSeconds();
+        let realtime = Number(hours + minutes.substr(-2));
+        let formattedTime = hours + ':' + minutes.substr(-2);
+        return formattedTime
+    }
+
+    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+        var R = 6371; // Radius of the earth in km
+        var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+        var dLon = deg2rad(lon2 - lon1);
+        var a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        ;
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c; // Distance in km
+        var f = d / 641
+        return d.toFixed();
+    }
+
+    function deg2rad(deg) {
+        return deg * (Math.PI / 180)
+    }
+
+    console.log(distance)
+
+    console.log(actualEstimatedArrival);
+    console.log(actualScheduledArrival);
+    console.log(actualScheduledDeparture);
+    console.log(actualRealDeparture);
+
+//console.log(summ);
+    $('#image').attr('src', aircraftImage.src)
+    $('#image').text(aircraftModel.text)
+    $('#image').text(aircraft.registration)
 }
 
-function getPlaneImage(planICAO) {
-    $.ajax({
-        url: 'https://www.airport-data.com/api/ac_thumb.json',
-        crossDomain: true,
-        dataType: 'json',
-        contentType: "application/json",
-        type: 'GET',
-        data: {
-            m: planICAO,
-            n: '1'
-        },
-        dataType: 'json',
-        crossDomain: true,
-        success: function(apiResponse) {
-            console.log(apiResponse)
-        }
-    });
-}
+
+
+

@@ -90,7 +90,25 @@
 
 <div id="layout_container">
 
-
+    <div class="air-menu">
+        <div class="menu-title">
+            <div class="menu-title-wrapper"></div>
+            <div id="close-button-menu"></div>
+        </div>
+        <div class="airline-name"></div>
+        <img id="image" src ="" />
+        <div class="airportIata"></div>
+        <div class="airportCity"></div>
+        <div class="airportTime"></div>
+        <div class="timetable timetable-sheduled"></div>
+        <div class="timetable timetable-actual"></div>
+        <div class="all-distance"></div>
+        <a class="about" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Подробнее о рейсе <span id="flight-text"></span></a>
+        <div id="collapseExample" class="arrival-info collapse"></div>
+        <div class="aircraft-type">Тип самолета <span id="aircraft-type"></span></div>
+        <div class="aircraft-reg">Регистрационный номер <span id="aircraft-reg"></span></div>
+        <div class="aircraft-reg">Страна регистрации <span>Страна</span></div>
+    </div>
     <div id="highlighted_infoblock">
         <div class="highlightedTitle">
             <span class="identLarge"><span id="highlighted_callsign">n/a</span></span>
@@ -390,7 +408,7 @@
                             <tbody>
                             <tr id="plane_row_template" class="plane_table_row hidden">
                                 <td class="icaoCodeColumn">ICAO</td>
-                                <td><img style="width: 20px; height=12px" src="about:blank" alt="Flag"></td>
+                                <td><img style="width: 20px; height: 12px" src="" alt="Flag"></td>
                                 <td>FLIGHT</td>
                                 <td>REGISTRATION</td>
                                 <td>AIRCRAFT_TYPE</td>
