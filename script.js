@@ -1372,8 +1372,8 @@ function refreshHighlighted() {
     var markerPosition = OLMap.getPixelFromCoordinate(markerCoordinates);
     var x = markerPosition[0];
     var y = markerPosition[1];
-    console.log(markerPosition[0],markerPosition[1])
-    console.log(Planes[HighlightedPlane])
+    //console.log(markerPosition[0],markerPosition[1])
+    //console.log(Planes[HighlightedPlane])
     if (x < 0 || y < 0 || x > mapCanvas.width() || y > mapCanvas.height()) {
         infoBox.fadeOut();
         return;
@@ -2502,7 +2502,7 @@ async function doAjax(SelectedPlane) {
         var aircraft = (image.aircraft) ? image.aircraft : null;
         var aircraftFlightM = image.identification.callsign;
         var aircraftFlight = image.identification.number.default;
-        var aircraftImage = aircraft.images.medium[0];
+        var aircraftImage = (aircraft.images.medium !== undefined) ? aircraft.images.medium[0] : null;
         var aircraftModel = aircraft.model.text;
         if (aircraft.registration || aircraft.registration !== null) {
             var aircraftReg = aircraft.registration
@@ -2555,7 +2555,7 @@ async function doAjax(SelectedPlane) {
             if ($('.timetable-actual').length == 0 && (actualRealDeparture !== null || actualEstimatedArrival == null)) {
                 $('.timetable-wrapper').append('<div class="timetable timetable-actual"> <div> Фактическое <span id="actual-departure"></span></div> <div> Предполагаемое <span id="estimated-arrival"></span></div> </div>');
             }
-            if (aircraftImage.src !== null) {
+            if (aircraft.images.medium !== undefined && aircraftImage.src !== null) {
                 $('.aircraft-image img').removeClass('spin-animation').attr('src', aircraftImage.src)
             }
             else {
