@@ -6,7 +6,7 @@ var DEGREES='\u00b0'
 var UP_TRIANGLE='\u25b2'; // U+25B2 BLACK UP-POINTING TRIANGLE
 var DOWN_TRIANGLE='\u25bc'; // U+25BC BLACK DOWN-POINTING TRIANGLE
 
-var TrackDirections = ["North","NE","East","SE","South","SW","West","NW"];
+var TrackDirections = ["Север","Северо-восток","Восток","Юго-восток","Юг","Юго-запад","Запад","Северо-запад"];
 
 var UnitLabels = {
 	'altitude': { metric: "m", imperial: "ft", nautical: "ft"},

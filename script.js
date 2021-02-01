@@ -804,6 +804,8 @@ function initialize_map() {
         loadTilesWhileInteracting: true
     });
 
+    //OLMap.getViewport().style.cursor = "grab";
+
 
     if (baseCount > 1) {
         OLMap.addControl(new ol.control.LayerSwitcher());
@@ -852,36 +854,67 @@ function initialize_map() {
             doAjax(Planes[SelectedPlane]);
             adjustSelectedInfoBlockPosition();
             evt.stopPropagation();
+
             $('.air-menu').addClass('visible');
         } else {
             deselectAllPlanes();
             evt.stopPropagation();
         }
     });
+    $('#close-button-menu').click( function () {
+        $('.air-menu').removeClass('visible');
+        setTimeout(function () {
+            $('.aircraft-image img').addClass('spin-animation').attr('src','/dump1090/images/radar.svg')
+            $('.airline-name span').text('N/A');
+            $('.menu-title .menu-title-wrapper h2').text('N/A');
+            $('#flight-text span').text('N/A');
+            $('.menu-title .menu-title-wrapper h2').text('N/A');
+            $('.menu-title .menu-title-wrapper h4').text('N/A');
+            $('#aircraft-type').text('N/A');
+            $('#aircraft-reg').text('N/A');
+            $('.timetable-actual #actual-departure').text('N/A');
+            $('.timetable-actual #estimated-arrival').text('N/A');
+            $('.timetable-sheduled #sheduled-departure').text('N/A');
+            $('.timetable-sheduled #sheduled-arrival').text('N/A');
+            $('.airportIata #airportIataD').text('N/A');
+            $('.airportIata #airportIataA').text('N/A');
+            $('.airportTime #airportTimeA').text('N/A')
+            $('.airportTime #airportTimeD').text('N/A')
+            $('.airportCity #airportCityD').text('N/A')
+            $('.airportCity #airportCityA').text('N/A')
+            $('.all-distance span').text('N/A');
+        }, 301)
 
-
+    })
     // show the hover box
     OLMap.on('pointermove', function (evt) {
         var hex = evt.map.forEachFeatureAtPixel(evt.pixel,
             function (feature, layer) {
                 return feature.hex;
-            },
-            {
-                layerFilter: function (layer) {
-                    return (layer === iconsLayer);
-                },
-                hitTolerance: 5,
             }
         );
-
         if (hex) {
+            this.getTargetElement().style.cursor = 'pointer';
             highlightPlaneByHex(hex);
         } else {
             removeHighlight();
+            this.getTargetElement().style.cursor = '';
         }
-
     })
+    OLMap.getViewport().style.cursor = "";
+    OLMap.on('pointerdrag', function(evt) {
+        var hit = this.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+            return true;
+        });
+        this.getTargetElement().style.cursor = "-webkit-grabbing";
+    });
 
+    OLMap.on('pointerup', function(evt) {
+        var hit = this.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+            return true;
+        });
+        this.getTargetElement().style.cursor = "-webkit-grab";
+    });
     // handle the layer settings pane checkboxes
     OLMap.once('postrender', function (e) {
         toggleLayer('#nexrad_checkbox', 'nexrad');
@@ -1339,22 +1372,17 @@ function refreshHighlighted() {
     var markerPosition = OLMap.getPixelFromCoordinate(markerCoordinates);
     var x = markerPosition[0];
     var y = markerPosition[1];
+    console.log(markerPosition[0],markerPosition[1])
+    console.log(Planes[HighlightedPlane])
     if (x < 0 || y < 0 || x > mapCanvas.width() || y > mapCanvas.height()) {
         infoBox.fadeOut();
         return;
     }
-    x = x + 20;
-    y = y + 60;
-    var w = infoBox.outerWidth() + 20;
-    var h = infoBox.outerHeight();
-    if (x > mapCanvas.width() - w) {
-        x -= w + 20;
-    }
-    if (y > mapCanvas.height() - h) {
-        y -= h;
-    }
+    x = x - 35;
+    y = y - 40;
+
     if (infoBox.css('visibility', 'visible')) {
-        infoBox.animate({left: x, top: y}, 500);
+        infoBox.animate({left: x, top: y}, 100);
     } else {
         infoBox.css({left: x, top: y});
     }
@@ -1365,34 +1393,6 @@ function refreshHighlighted() {
     } else {
         $('#highlighted_callsign').text('n/a');
     }
-
-    if (highlighted.icaotype !== null) {
-        $('#higlighted_icaotype').text(highlighted.icaotype);
-    } else {
-        $('#higlighted_icaotype').text("n/a");
-    }
-
-    if (highlighted.getDataSource() === "adsb_icao") {
-        $('#highlighted_source').text("ADS-B");
-    } else if (highlighted.getDataSource() === "tisb_trackfile" || highlighted.getDataSource() === "tisb_icao" || highlighted.getDataSource() === "tisb_other") {
-        $('#highlighted_source').text("TIS-B");
-    } else if (highlighted.getDataSource() === "mlat") {
-        $('#highlighted_source').text("MLAT");
-    } else {
-        $('#highlighted_source').text("Other");
-    }
-
-    if (highlighted.registration !== null) {
-        $('#highlighted_registration').text(highlighted.registration);
-    } else {
-        $('#highlighted_registration').text("n/a");
-    }
-
-    $('#highlighted_speed').text(format_speed_long(highlighted.speed, DisplayUnits));
-
-    $("#highlighted_altitude").text(format_altitude_long(highlighted.altitude, highlighted.vert_rate, DisplayUnits));
-
-    $('#highlighted_icao').text(highlighted.icao.toUpperCase());
 
 }
 
@@ -2480,7 +2480,7 @@ async function doAjax(SelectedPlane) {
     }
     var planFlight = String(plane.flight).trim(),
         planICAO = plane.icao;
-        console.log (planFlight)
+        console.log (plane)
     let image = await $.ajax({
         url: 'https://wnstudio.ru/air3.php',
         type: 'POST',
@@ -2488,64 +2488,254 @@ async function doAjax(SelectedPlane) {
             flight: planFlight,
         },
         dataType: 'json',
+        beforeSend: function () {
+            $('.aircraft-image img').addClass('spin-animation').attr('src','/dump1090/images/radar.svg');
+        },
         success: function (response) {
-            console.log (planFlight)
             console.log(response)
         }
     });
-    console.log(image);
-    var aircraft = image.aircraft;
-    var aircraftHex = image.aircraft.hex;
-    var aircraftFlightM = image.identification.callsign;
-    var aircraftFlight = image.identification.number.default;
-    var aircraftImage = aircraft.images.medium[0];
-    var aircraftModel = aircraft.model.text;
-    var aircraftReg = aircraft.registration;
-    var aircraftAirportD = image.airport.destination;
-    var aircraftAirportA = image.airport.origin;
-    var aircraftAirportDCity = aircraftAirportD.position.region.city;
-    var aircraftAirportACity = aircraftAirportA.position.region.city;
-    var aircraftAirportAIata = aircraftAirportA.code.iata;
-    var aircraftAirportDIata = aircraftAirportD.code.iata;
-    var aircraftAirline = image.airline.name;
-    var iconDelayed = image.status.icon;
-    var aircraftAirportBaggage = image.airport.destination.info.baggage;
-    var aircraftAirportTerminal = image.airport.destination.info.terminal;
-    var aircraftAirportGate = image.airport.destination.info.gate;
-    var aircraftAirportATimezoneHours = aircraftAirportA.timezone.offsetHours;
-    var aircraftAirportDTimezoneHours = aircraftAirportD.timezone.offsetHours;
-    var offsetHoursANumber = (parseInt(aircraftAirportATimezoneHours, 10));
-    var offsetHoursDNumber = (parseInt(aircraftAirportDTimezoneHours, 10));
-    var utcOffsetHoursD = (offsetHoursDNumber < 0) ? offsetHoursDNumber + ':00' : '+' + offsetHoursDNumber + ':00';
-    var utcOffsetHoursA = (offsetHoursANumber < 0) ? offsetHoursANumber + ':00' : '+' + offsetHoursANumber + ':00';
-    var actualEstimatedArrival = getTime(image.time.estimated.arrival, image.airport.destination.timezone.offset);
-    var actualScheduledArrival = getTime(image.time.scheduled.arrival, image.airport.destination.timezone.offset);
-    var actualScheduledDeparture = getTime(image.time.scheduled.departure, image.airport.origin.timezone.offset);
-    var actualRealDeparture = getTime(image.time.real.departure, image.airport.origin.timezone.offset);
-    var lat1 = image.airport.destination.position.latitude;
-    var lon1 = image.airport.destination.position.longitude;
-    var lat2 = image.airport.origin.position.latitude;
-    var lon2 = image.airport.origin.position.longitude;
-    var distance = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
+        if (image.success == false) {
+            console.log('123')
+        }
+    if (image.success !== false)  {
+        var aircraft = (image.aircraft) ? image.aircraft : null;
+        var aircraftFlightM = image.identification.callsign;
+        var aircraftFlight = image.identification.number.default;
+        var aircraftImage = aircraft.images.medium[0];
+        var aircraftModel = aircraft.model.text;
+        if (aircraft.registration || aircraft.registration !== null) {
+            var aircraftReg = aircraft.registration
+        } else if (plane.flight !== null && plane.flight !== "") {
+            var aircraftReg = plane.flight;
+        }
+        var aircraftAirportD = image.airport.destination;
+        var aircraftAirportA = image.airport.origin;
+        if (aircraftAirportD !== null) {
+            var aircraftAirportDCity = aircraftAirportD.position.region.city;
+            var aircraftAirportDIata = aircraftAirportD.code.iata;
+            var aircraftAirportBaggage = image.airport.destination.info.baggage;
+            var aircraftAirportTerminal = image.airport.destination.info.terminal;
+            var aircraftAirportGate = image.airport.destination.info.gate;
+            var actualEstimatedArrival = (image.time.estimated.arrival != null && image.time.estimated.arrival != undefined && image.time.estimated.arrival != '0') ? getTime(image.time.estimated.arrival, image.airport.destination.timezone.offset) : null;
+            var actualScheduledArrival = (image.time.scheduled.arrival != null && image.time.scheduled.arrival != undefined && image.time.scheduled.arrival != '0') ? getTime(image.time.scheduled.arrival, image.airport.destination.timezone.offset) : null
+            var lat1 = image.airport.destination.position.latitude;
+            var lon1 = image.airport.destination.position.longitude;
+            var aircraftAirportDTimezoneHours = aircraftAirportD.timezone.offsetHours;
+            var offsetHoursDNumber = (parseInt(aircraftAirportDTimezoneHours, 10));
+            var utcOffsetHoursD = (offsetHoursDNumber < 0) ? offsetHoursDNumber + ':00' : '+' + offsetHoursDNumber + ':00';
+        }
+        if (aircraftAirportA !== null) {
+            var aircraftAirportACity = aircraftAirportA.position.region.city;
+            var aircraftAirportAIata = aircraftAirportA.code.iata;
+            var aircraftAirportATimezoneHours = aircraftAirportA.timezone.offsetHours;
+            var offsetHoursANumber = (parseInt(aircraftAirportATimezoneHours, 10));
+            var actualScheduledDeparture = (image.time.scheduled.departure != null && image.time.scheduled.departure != undefined && image.time.scheduled.departure != '0') ? getTime(image.time.scheduled.departure, image.airport.origin.timezone.offset) : null;
+            var actualRealDeparture = (image.time.real.departure != null && image.time.real.departure != undefined && image.time.real.departure != '0') ? getTime(image.time.real.departure, image.airport.origin.timezone.offset) : null;
+            var utcOffsetHoursA = (offsetHoursANumber < 0) ? offsetHoursANumber + ':00' : '+' + offsetHoursANumber + ':00';
+            var lat2 = image.airport.origin.position.latitude;
+            var lon2 = image.airport.origin.position.longitude;
+        }
+        var aircraftAirline = image.airline.name;
+        var iconDelayed = image.status.icon;
+        if (lat1 != null && lat2 != null && lon1 != null && lon2 != null) {
+            var distance = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
+        } else if (lat1 != undefined && lat2 != undefined && lon1 != undefined && lon2 != undefined) {
+            var distance = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
+        }
+    }
 
     innerData()
 
     function innerData() {
-        $('.menu-title').html('<h2>' + aircraftFlight + '</h2><h4>/' + aircraftFlightM + '</h4');
-        $('.airline-name').html('<span>' + aircraftAirline + '</span>');
-        $('.airportIata').html('<div>' + aircraftAirportAIata + '</div><div>' + aircraftAirportDIata + '</div>');
-        $('.airportCity').html('<div>' + aircraftAirportACity + '</div><div>' + aircraftAirportDCity + '</div>');
-        $('.airportTime').html('<div>UTC ' + utcOffsetHoursA + '</div><div>UTC ' + utcOffsetHoursD + '</div>')
-        $('.timetable-sheduled').html('<div> По расписанию <span>' + actualScheduledDeparture + '</span></div><div> По расписанию <span>' + actualScheduledArrival + '</span></div>')
-        $('.timetable-actual').html('<div> Фактическое <span>' + actualRealDeparture + '</span></div><div> Предполагаемое <span>' + actualEstimatedArrival + '</span></div>');
-        $('.all-distance').html('<div>Дальность полёта ' + distance + ' км</div>');
-        $('#flight-text').text(aircraftFlight);
-        $('.arrival-info').html('<div>Терминал ' + aircraftAirportTerminal + '</div><div>Гейт ' + aircraftAirportGate + '</div><div> Багажная карусель ' + aircraftAirportBaggage + '</div>');
-        $('#aircraft-type').text(aircraftModel);
-        $('#aircraft-reg').text(aircraftReg);
-    }
+        if (image.success !== false) {
+            if ($('.timetable-sheduled').length == 0 && (actualScheduledDeparture !== null || actualScheduledArrival == null)) {
+                $('.timetable-wrapper').prepend('<div class="timetable timetable-sheduled"><div> По расписанию <span id="sheduled-departure"></span></div><div> По расписанию <span id="sheduled-arrival"></span></div></div>');
+            }
+            if ($('.timetable-actual').length == 0 && (actualRealDeparture !== null || actualEstimatedArrival == null)) {
+                $('.timetable-wrapper').append('<div class="timetable timetable-actual"> <div> Фактическое <span id="actual-departure"></span></div> <div> Предполагаемое <span id="estimated-arrival"></span></div> </div>');
+            }
+            if (aircraftImage.src !== null) {
+                $('.aircraft-image img').removeClass('spin-animation').attr('src', aircraftImage.src)
+            }
+            else {
+                $('.aircraft-image img').removeClass('spin-animation').attr('src', '/dump1090/images/no-flight.svg')
+            }
+            if (aircraftFlight !== null) {
+                $('.menu-title .menu-title-wrapper h2').text(aircraftFlight);
+            }
+            if (aircraftFlightM !== null) {
+                $('.menu-title .menu-title-wrapper h4').text(aircraftFlightM);
+            }
+            if (actualScheduledDeparture == null && actualScheduledArrival == null) {
+                $('.timetable-sheduled').remove();
+            }
+            if (actualScheduledDeparture != null && actualScheduledDeparture != undefined) {
+                $('.timetable-sheduled #sheduled-departure').text(actualScheduledDeparture)
+            } else {
+                $('.timetable-sheduled #sheduled-departure').text('-');
+            }
+            if (actualScheduledArrival != null && actualScheduledArrival != undefined) {
+                $('.timetable-sheduled #sheduled-arrival').text(actualScheduledArrival)
+            } else {
+                $('.timetable-sheduled #sheduled-arrival').text('-');
+            }
+            if (actualRealDeparture == null && actualEstimatedArrival == null) {
+                $('.timetable-actual').remove();
+            }
+            if (actualRealDeparture != null && actualRealDeparture != undefined) {
+                $('.timetable-actual #actual-departure').text(actualRealDeparture)
+            } else {
+                $('.timetable-actual #actual-departure').text('-');
+            }
+            if (actualEstimatedArrival != null && actualEstimatedArrival != undefined) {
+                $('.timetable-actual #estimated-arrival').text(actualEstimatedArrival)
+            } else {
+                $('.timetable-actual #estimated-arrival').text('-');
+            }
+            if (aircraftAirline !== null && aircraftAirline !== undefined) {
+                $('.airline-name span').text(aircraftAirline);
+            }
+            if (aircraftAirportAIata != null && aircraftAirportAIata != undefined ) {
+                $('.airportIata #airportIataD').text(aircraftAirportAIata);
+            }
+            if (aircraftAirportDIata != null && aircraftAirportDIata != undefined ) {
+                $('.airportIata #airportIataA').text(aircraftAirportDIata);
+            }
+            if (utcOffsetHoursD != null && utcOffsetHoursD != undefined ) {
+                $('.airportTime #airportTimeA').text('UTC ' + utcOffsetHoursD)
+            }
+            if (utcOffsetHoursA != null && utcOffsetHoursA != undefined ) {
+                $('.airportTime #airportTimeD').text('UTC ' + utcOffsetHoursA)
+            }
+            if (aircraftAirportACity != null && aircraftAirportACity != undefined ) {
+                $('.airportCity #airportCityD').text(aircraftAirportACity)
+            }
+            if (aircraftAirportDCity != null && aircraftAirportDCity != undefined ) {
+                $('.airportCity #airportCityA').text(aircraftAirportDCity)
+            }
+            if (distance != null && distance != undefined) {
+                $('.all-distance span').text(distance + ' км');
+            } else {
+                $('.all-distance span').text('N/A');
+            }
+            if (aircraftFlight != null || aircraftFlight != undefined) {
+                $('#flight-text span').text(aircraftFlight); 
+            }
+            if ($('#flight-info-wrapper').length == 0 && aircraftAirportTerminal != null || aircraftAirportGate != null || aircraftAirportBaggage != null || distance != null ) {
+                
+            }
+            if (aircraftAirportTerminal != null || aircraftAirportTerminal != undefined) {
+                $('#aircraft-terminal').text(aircraftAirportTerminal)
+            } else {
+                $('#aircraft-terminal').text('N/A')
+            }
+            if (aircraftAirportGate != null || aircraftAirportGate != undefined) {
+                $('#aircraft-gate').text(aircraftAirportGate)
+            } else {
+                $('#aircraft-gate').text('N/A')
+            }
+            if (aircraftAirportBaggage != null || aircraftAirportBaggage != undefined) {
+                $('#aircraft-bag').text(aircraftAirportBaggage)
+            } else {
+                $('#aircraft-bag').text('N/A')
+            }
+            $('#aircraft-type').text(aircraftModel);
+            $('#aircraft-reg').text(aircraftReg);
+        }
+        else {
+            $('.aircraft-image img').removeClass('spin-animation').attr('src', '/dump1090/images/no-flight.svg')
+            $('.airline-name span').text('N/A');
+            if (plane.flight !== null && plane.flight !== "") {
+                $('.menu-title .menu-title-wrapper h2').text(plane.flight);
+                $('#flight-text span').text(plane.flight);
+            }
+            else {
+                $('.menu-title .menu-title-wrapper h2').text('N/A');
+            }
+            if (plane.icao !== null) {
+                $('.menu-title .menu-title-wrapper h4').text(plane.icao);
+            }
+            else {
+                $('.menu-title .menu-title-wrapper h4').text('N/A');
+            }
+            if (plane.icaotype !== null) {
+                $('#aircraft-type').text(plane.icaotype);
+            }
+            else {
+                $('#aircraft-type').text('N/A');
+            }
+            if (plane.registration !== null) {
+                $('#aircraft-reg').text(plane.registration);
+            }
+            else {
+                $('#aircraft-reg').text('N/A');
+            }
+            $('.timetable-sheduled').remove();
+            $('.timetable-actual #actual-departure').text('N/A');
+            $('.timetable-actual #estimated-arrival').text('N/A');
+            $('.airportIata #airportIataD').text('N/A');
+            $('.airportIata #airportIataA').text('N/A');
+            $('.airportTime #airportTimeA').text('N/A')
+            $('.airportTime #airportTimeD').text('N/A')
+            $('.airportCity #airportCityD').text('N/A')
+            $('.airportCity #airportCityA').text('N/A')
+            $('.all-distance span').text('N/A');
+        }
 
-    console.log(image);
+        if (ShowFlags && plane.icaorange.flag_image !== null) {
+            $('.aircraft-country img').attr('src', FlagPath + plane.icaorange.flag_image);
+            $('.aircraft-country img').attr('title', plane.icaorange.country);
+        } else {
+            $('.aircraft-country img').css('display', 'none');
+        }
+        if (plane.track !== null) {
+            $('.aircraft_track span').text(format_track_long(plane.track))
+        }
+        if (plane.sitedist !== null) {
+            $('#aircraft_sitedist').text(format_distance_long(plane.sitedist, DisplayUnits));
+        }
+        if (plane.altitude !== null) {
+            $("#aircraft_altitude").text(format_altitude_long(plane.altitude, plane.vert_rate, DisplayUnits));
+        }
+        if (plane.position === null) {
+            $('#aircraft_position').text('N/A');
+        } else {
+            $('#aircraft_position').text(format_latlng(plane.position));
+        }
+        if (plane.speed !== null) {
+            $('#aircraft_speed').text(format_speed_long(plane.speed, DisplayUnits));
+        }
+        if (plane.getDataSource() === "adsb_icao") {
+            $('#aircraft_source_info').text("ADS-B");
+        } else if (plane.getDataSource() === "tisb_trackfile" || plane.getDataSource() === "tisb_icao" || plane.getDataSource() === "tisb_other") {
+            $('#aircraft_source_info').text("TIS-B");
+        } else if (plane.getDataSource() === "mlat") {
+            $('#aircraft_source_info').text("MLAT");
+        } else {
+            $('#aircraft_source_info').text("Other");
+        }
+        if (plane.version == null) {
+            $('#aircraft_source_ver').text('none');
+        } else if (plane.version == 0) {
+            $('#aircraft_source_ver').text('v0 (DO-260)');
+        } else if (plane.version == 1) {
+            $('#aircraft_source_ver').text('v1 (DO-260A)');
+        } else if (plane.version == 2) {
+            $('#aircraft_source_vern').text('v2 (DO-260B)');
+        } else {
+            $('#aircraft_source_ver').text('v' + plane.version);
+        }
+        $('#aircraft_source_cat').text(plane.category ? plane.category : "N/A");
+        if (plane.squawk === null || plane.squawk === '0000') {
+            $('#aircraft_source_squawk').text('N/A');
+        } else {
+            $('#saircraft_source_squawk').text(plane.squawk);
+        }
+        $('#aircraft_source_mes').text(plane.messages);
+        $('#aircraft_source_rssi').text(plane.rssi.toFixed(1) + ' dBFS');
+
+    }
 
     function getTime(time, offsetTime) {
         let unix_timestamp = time;
@@ -2581,17 +2771,7 @@ async function doAjax(SelectedPlane) {
         return deg * (Math.PI / 180)
     }
 
-    console.log(distance)
 
-    console.log(actualEstimatedArrival);
-    console.log(actualScheduledArrival);
-    console.log(actualScheduledDeparture);
-    console.log(actualRealDeparture);
-
-//console.log(summ);
-    $('#image').attr('src', aircraftImage.src)
-    $('#image').text(aircraftModel.text)
-    $('#image').text(aircraft.registration)
 }
 
 
