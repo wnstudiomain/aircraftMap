@@ -39,9 +39,16 @@ html, body {
 #sidebar_container {
 	display: flex;
 	flex-direction: column;
-    width: 660px;
+    max-width: 0px;
+    width: 100%;
 	left: 0 !important;
 	height: 100%;
+    transform: translate(300%, 0);
+    transition: all ease-in-out .3s;
+}
+#sidebar_container.visible {
+    max-width: 660px;
+    transform: translate(0, 0);
 }
 
 #map_container {
@@ -545,6 +552,7 @@ aircraft-info > div {
     border: none;
     background-image: url("/dump1090/images/toggle-width@2x.png");
     background-size: cover;
+    display: none !important;
 }
 
 #splitter-infoblock {
@@ -915,7 +923,8 @@ select.error, textarea.error, input.error {
     z-index: 9999;
     position: absolute;
     display: none;
-    background-color: #323232;
+    background-color: rgba(0,0,0,.5);
+    border-radius: 9px;
 }
 
 .highlightedTitle {
@@ -929,21 +938,11 @@ select.error, textarea.error, input.error {
 }
 
 .identLarge {
-    font-size: 12px;
+    font-size: 11px;
     color: #fff;
     font-weight: 600;
-    padding: 12px 12px 12px 12px;
+    padding: 12px 8px 12px 8px;
     position: relative;
-}
-#highlighted_infoblock::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #323232 transparent transparent transparent;
 }
 
 .identSmall {

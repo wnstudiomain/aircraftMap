@@ -1149,7 +1149,7 @@ function refreshSelected() {
         $('#dump1090_message_rate').text("n/a");
     }
 
-    setSelectedInfoBlockVisibility();
+    //setSelectedInfoBlockVisibility();
 
     if (!selected) {
         return;
@@ -1378,9 +1378,16 @@ function refreshHighlighted() {
         infoBox.fadeOut();
         return;
     }
-    x = x - 35;
-    y = y - 40;
-
+    x = x - 30;
+    y = y - 42;
+    var w = infoBox.outerWidth() + 20;
+    var h = infoBox.outerHeight();
+    if (x > mapCanvas.width() - w) {
+        x -= w + 20;
+    }
+    if (y > mapCanvas.height() - h) {
+        y -= h;
+    }
     if (infoBox.css('visibility', 'visible')) {
         infoBox.animate({left: x, top: y}, 100);
     } else {
@@ -1859,11 +1866,11 @@ function toggleSidebarVisibility(e) {
     if (e) {
         e.preventDefault();
     }
-    $("#sidebar_container").toggle();
+    $("#sidebar_container").toggleClass('visible');
     $("#expand_sidebar_control").toggle();
-    $("#toggle_sidebar_button").toggleClass("show_sidebar");
     $("#toggle_sidebar_button").toggleClass("hide_sidebar");
-    updateMapSize();
+    $("#toggle_sidebar_button").toggleClass("show_sidebar");
+     //updateMapSize();
 }
 
 function expandSidebar(e) {
@@ -1877,7 +1884,7 @@ function expandSidebar(e) {
     $("#show_map_button").show();
     $("#sidebar_container").width("100%");
     setColumnVisibility();
-    setSelectedInfoBlockVisibility();
+   // setSelectedInfoBlockVisibility();
     updateMapSize();
 }
 
@@ -1889,7 +1896,7 @@ function showMap() {
     $("#show_map_button").hide();
     $("#sidebar_container").width("470px");
     setColumnVisibility();
-    setSelectedInfoBlockVisibility();
+    //setSelectedInfoBlockVisibility();
     updateMapSize();
 }
 
@@ -1947,7 +1954,7 @@ function setColumnVisibility() {
     });
 }
 
-function setSelectedInfoBlockVisibility() {
+/*function setSelectedInfoBlockVisibility() {
     var mapIsVisible = $("#map_container").is(":visible");
     var planeSelected = (typeof SelectedPlane !== 'undefined' && SelectedPlane != null && SelectedPlane != "ICAO");
 
@@ -1958,7 +1965,7 @@ function setSelectedInfoBlockVisibility() {
         $('#selected_infoblock').hide();
         $('#sidebar_canvas').css('margin-bottom', 0);
     }
-}
+}*/
 
 // Reposition selected plane info box if it overlaps plane marker
 function adjustSelectedInfoBlockPosition() {
@@ -2489,7 +2496,7 @@ async function doAjax(SelectedPlane) {
         },
         dataType: 'json',
         beforeSend: function () {
-            $('.aircraft-image img').addClass('spin-animation').attr('src','/dump1090/images/radar.svg');
+            $('.aircraft-image img').attr('src','/dump1090/images/radar.svg').addClass('spin-animation');
         },
         success: function (response) {
             console.log(response)
