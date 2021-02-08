@@ -1870,7 +1870,7 @@ function toggleSidebarVisibility(e) {
     $("#expand_sidebar_control").toggle();
     $("#toggle_sidebar_button").toggleClass("hide_sidebar");
     $("#toggle_sidebar_button").toggleClass("show_sidebar");
-     //updateMapSize();
+    //updateMapSize();
 }
 
 function expandSidebar(e) {
@@ -1884,7 +1884,7 @@ function expandSidebar(e) {
     $("#show_map_button").show();
     $("#sidebar_container").width("100%");
     setColumnVisibility();
-   // setSelectedInfoBlockVisibility();
+    // setSelectedInfoBlockVisibility();
     updateMapSize();
 }
 
@@ -2487,7 +2487,7 @@ async function doAjax(SelectedPlane) {
     }
     var planFlight = String(plane.flight).trim(),
         planICAO = plane.icao;
-        console.log (plane)
+    console.log (plane)
     let image = await $.ajax({
         url: 'https://wnstudio.ru/air3.php',
         type: 'POST',
@@ -2502,9 +2502,9 @@ async function doAjax(SelectedPlane) {
             console.log(response)
         }
     });
-        if (image.success == false) {
-            console.log('123')
-        }
+    if (image.success == false) {
+        console.log('123')
+    }
     if (image.success !== false)  {
         var aircraft = (image.aircraft) ? image.aircraft : null;
         var aircraftFlightM = image.identification.callsign;
@@ -2627,10 +2627,10 @@ async function doAjax(SelectedPlane) {
                 $('.all-distance span').text('N/A');
             }
             if (aircraftFlight != null || aircraftFlight != undefined) {
-                $('#flight-text span').text(aircraftFlight); 
+                $('#flight-text span').text(aircraftFlight);
             }
             if ($('#flight-info-wrapper').length == 0 && aircraftAirportTerminal != null || aircraftAirportGate != null || aircraftAirportBaggage != null || distance != null ) {
-                
+
             }
             if (aircraftAirportTerminal != null || aircraftAirportTerminal != undefined) {
                 $('#aircraft-terminal').text(aircraftAirportTerminal)
