@@ -419,7 +419,7 @@ PlaneObject.prototype.updateIcon = function() {
                 //console.log(this.icao + " new icon and style " + this.markerSvgKey + " -> " + svgKey);
 
                 var icon = new ol.style.Icon({
-                        anchor: [0.5, 0.5],
+                        anchor: [0.25, 0.25],
                         anchorXUnits: 'fraction',
                         anchorYUnits: 'fraction',
                         scale: 2 * scaleFactor,

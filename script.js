@@ -2489,7 +2489,7 @@ async function doAjax(SelectedPlane) {
         planICAO = plane.icao;
     console.log (plane)
     let image = await $.ajax({
-        url: 'https://wnstudio.ru/air3.php',
+        url: 'air.php',
         type: 'POST',
         data: {
             flight: planFlight,
