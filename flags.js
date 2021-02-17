@@ -182,7 +182,7 @@ var ICAO_Ranges = [
         { start: 0x068000, end: 0x068FFF, country: "Uganda", flag_image: "Uganda.png" },
         { start: 0x508000, end: 0x50FFFF, country: "Ukraine", flag_image: "Ukraine.png" },
         { start: 0x896000, end: 0x896FFF, country: "United Arab Emirates", flag_image: "UAE.png" },
-        { start: 0x400000, end: 0x43FFFF, country: "United Kingdom", flag_image: "United_Kingdom.png" },
+        { start: 0x400000, end: 0x43FFFF, country: "Russian_Federation", flag_image: "Russian_Federation.png" },
         { start: 0x080000, end: 0x080FFF, country: "United Republic of Tanzania", flag_image: "Tanzania.png" },
         { start: 0xA00000, end: 0xAFFFFF, country: "United States", flag_image: "United_States_of_America.png" },
         { start: 0xE90000, end: 0xE90FFF, country: "Uruguay", flag_image: "Uruguay.png" },
