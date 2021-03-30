@@ -264,6 +264,18 @@ function initialize() {
         }
     });
 
+    $('#change-layer').on('click',function(){
+        let layer = $(this).attr('data-layer')
+        if (layer == 'basic_layer') {
+            $(this).html('<img src="/dump1090/images/sun (1) 1.svg">')
+            $(this).attr('data-layer','carto_dark_all')
+        }
+        else {
+            $(this).html('<img src="/dump1090/images/night (1).svg">')
+            $(this).attr('data-layer','basic_layer')
+        }
+    })
+
     // this is a little hacky, but the best, most consitent way of doing this. change the margin bottom of the table container to the height of the overlay
     $('#selected_infoblock').on('resize', function() {
         $('#sidebar_canvas').css('margin-bottom', $('#selected_infoblock').height() + 'px');
@@ -333,12 +345,7 @@ function initialize() {
     if (ColorByAlt.air.h.length === 3 && ColorByAlt.air.h[0].alt === 2000 && ColorByAlt.air.h[0].val === 20 && ColorByAlt.air.h[1].alt === 10000 && ColorByAlt.air.h[1].val === 140 && ColorByAlt.air.h[2].alt === 40000 && ColorByAlt.air.h[2].val === 300) {
         customAltitudeColors = false;
     }
-
-    $("#sitepos_checkbox").click(function() {
-        console.log('123')
-    })
-
-
+ 
     $("#altitude_filter_reset_button").click(onResetAltitudeFilter);
 
     $('#settingsCog').on('click', function() {
@@ -407,11 +414,7 @@ function initialize() {
     toggleAllPlanes(false);
     toggleGroupByDataType(false);
     toggleAllColumns(false);
-
-
-    if (!$('#sitepos_checkbox').hasClass('settingsCheckboxChecked')) {
-        console.log('123123123')
-    }
+ 
 
     // Get receiver metadata, reconfigure using it, then continue
     // with initialization
@@ -710,7 +713,9 @@ function initialize_map() {
 
     // Initialize OL3
 
+
     layers = createBaseLayers();
+ 
 
     var iconsLayer = new ol.layer.Vector({
         name: 'ac_positions',
@@ -753,6 +758,8 @@ function initialize_map() {
         layers: layers
     })
 
+    //console.log(layerGroup)
+
     ol.control.LayerSwitcher.forEachRecursive(layerGroup, function(lyr) {
         if (!lyr.get('name'))
             return;
@@ -766,11 +773,13 @@ function initialize_map() {
                 lyr.setVisible(false);
             }
 
-            lyr.on('change:visible', function(evt) {
+            MapType = localStorage['MapType'] = 'basic_layer';
+
+            /*lyr.on('change:visible', function(evt) {
                 if (evt.target.getVisible()) {
                     MapType = localStorage['MapType'] = evt.target.get('name');
                 }
-            });
+            });*/
         } else if (lyr.get('type') === 'overlay') {
             var visible = localStorage['layer_' + lyr.get('name')];
             if (visible != undefined) {
@@ -923,10 +932,10 @@ function initialize_map() {
     });
     // handle the layer settings pane checkboxes
     OLMap.once('postrender', function(e) {
-        toggleLayer('#nexrad_checkbox', 'nexrad');
         toggleLayer('#sitepos_checkbox', 'site_pos');
         toggleLayer('#actrail_checkbox', 'ac_trail');
         toggleLayer('#acpositions_checkbox', 'ac_positions');
+        toggleLayer('#change-layer', 'carto_dark_all');
     });
 
     // Add home marker if requested
@@ -1712,6 +1721,8 @@ function selectPlaneByHex(hex, autofollow) {
         Planes[SelectedPlane].updateLines();
         Planes[SelectedPlane].updateMarker();
         $(Planes[SelectedPlane].tr).addClass("selected");
+        doAjax(Planes[SelectedPlane]);
+        $('.air-menu').addClass('visible');
     } else {
         SelectedPlane = null;
     }
@@ -2252,6 +2263,35 @@ function getAirframesModeSLink(code) {
 
     return "";
 }
+/*
+function changeLayer(nameLayer) {
+
+    console.log(layerGroup)
+
+    
+    ol.control.LayerSwitcher.forEachRecursive(layerGroup, function(lyr) {
+        var visible = false;
+        //lyr.setVisible(true);
+        //console.log(lyr)
+        //console.log(lyr.get('name'))
+
+
+        if (lyr.get('name') === nameLayer && nameLayer === 'carto_dark_all') {
+            console.log(lyr)
+            lyr.setVisible(!lyr.getVisible());
+        } 
+        else if (lyr.get('name') === nameLayer && nameLayer === 'basic_layer') {
+            console.log(lyr)
+            lyr.setVisible(!lyr.getVisible());
+        }
+        lyr.on('change:visible', function(evt) {
+            if (evt.target.getVisible()) {
+                MapType = localStorage['MapType'] = evt.target.get('name');
+            }
+        });
+})
+}
+*/
 
 
 // takes in an elemnt jQuery path and the OL3 layer name and toggles the visibility based on clicking it

@@ -994,7 +994,7 @@ input.error {
 .layer-switcher {
     bottom: 20px !important;
     top: auto !important;
-    right: 10px !important;
+    right: 80px !important;
 }
 
 .nav-bottom {
@@ -1389,6 +1389,10 @@ input.error {
     bottom: 35px;
     display: none;
     background-color: transparent !important;
+}
+
+.change-layer.settingsCheckboxChecked {
+    background-image: none !important;
 }
 
 #altitude_chart_button {

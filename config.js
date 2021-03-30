@@ -26,61 +26,64 @@ DisplayUnits = "metric";
 DefaultCenterLat = 45.0;
 DefaultCenterLon = 9.0;
 // The google maps zoom level, 0 - 16, lower is further out
-if ($( window ).width() > 767) {
-        DefaultZoomLvl = 6;
-}
-else {
-        DefaultZoomLvl   = 6;
+if ($(window).width() > 767) {
+    DefaultZoomLvl = 6;
+} else {
+    DefaultZoomLvl = 6;
 }
 
+UserMapShow = true; //true to show KML
+// KML to show, for example your rangeview.kml: 
+UserMap = "radar.kml"; // your KML URL (publicly available domain)
 // Center marker. If dump1090 provides a receiver location,
 // that location is used and these settings are ignored.
 
-SiteShow    = false;           // true to show a center marker
-SiteLat     = 45.0;            // position of the marker
-SiteLon     = 9.0;
-SiteName    = "ЮЗГУ"; // tooltip of the marker
+SiteShow = false; // true to show a center marker
+SiteLat = 45.0; // position of the marker
+SiteLon = 9.0;
+SiteName = "ЮЗГУ"; // tooltip of the marker
 
 // -- Marker settings -------------------------------------
 
 // These settings control the coloring of aircraft by altitude.
 // All color values are given as Hue (0-359) / Saturation (0-100) / Lightness (0-100)
-ColorByAlt = {  
-        // HSL for planes with unknown altitude:
-        unknown : { h: 0,   s: 0,   l: 40 },
+ColorByAlt = {
+    // HSL for planes with unknown altitude:
+    unknown: { h: 0, s: 0, l: 40 },
 
-        // HSL for planes that are on the ground:
-        ground  : { h: 120, s: 100, l: 30 },
+    // HSL for planes that are on the ground:
+    ground: { h: 120, s: 100, l: 30 },
 
-        air : {
-                // These define altitude-to-hue mappings
-                // at particular altitudes; the hue
-                // for intermediate altitudes that lie
-                // between the provided altitudes is linearly
-                // interpolated.
-                //
-                // Mappings must be provided in increasing
-                // order of altitude.
-                //
-                // Altitudes below the first entry use the
-                // hue of the first entry; altitudes above
-                // the last entry use the hue of the last
-                // entry.
-                h: [ { alt: 2000,  val: 20 },    // orange
-                     { alt: 10000, val: 140 },   // light green
-                     { alt: 40000, val: 300 } ], // magenta
-                s: 85,
-                l: 50,
-        },
+    air: {
+        // These define altitude-to-hue mappings
+        // at particular altitudes; the hue
+        // for intermediate altitudes that lie
+        // between the provided altitudes is linearly
+        // interpolated.
+        //
+        // Mappings must be provided in increasing
+        // order of altitude.
+        //
+        // Altitudes below the first entry use the
+        // hue of the first entry; altitudes above
+        // the last entry use the hue of the last
+        // entry.
+        h: [{ alt: 2000, val: 20 }, // orange
+            { alt: 10000, val: 140 }, // light green
+            { alt: 40000, val: 300 }
+        ], // magenta
+        s: 85,
+        l: 50,
+    },
 
-        // Changes added to the color of the currently selected plane
-        selected : { h: 0, s: -10, l: +20 },
+    // Changes added to the color of the currently selected plane
+    selected: { h: 0, s: -10, l: +20 },
 
-        // Changes added to the color of planes that have stale position info
-        stale :    { h: 0, s: -10, l: +30 },
+    // Changes added to the color of planes that have stale position info
+    stale: { h: 0, s: -10, l: +30 },
 
-        // Changes added to the color of planes that have positions from mlat
-        mlat :     { h: 0, s: -10, l: -10 }
+    // Changes added to the color of planes that have positions from mlat
+    mlat: { h: 0, s: -10, l: -10 }
 };
 
 // For a monochrome display try this:

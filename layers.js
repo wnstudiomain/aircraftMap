@@ -12,7 +12,7 @@ function createBaseLayers() {
 
     var layer = new ol.layer.Tile({
         source: new ol.source.OSM(),
-        name: 'osm',
+        name: 'basic_layer',
         title: 'OpenStreetMap',
         type: 'base',
     });
@@ -33,7 +33,6 @@ function createBaseLayers() {
         type: 'base',
     }));
 
-
     if (world.length > 0) {
         layers.push(new ol.layer.Group({
             name: 'world',
@@ -42,6 +41,6 @@ function createBaseLayers() {
         }));
     }
 
-
+    console.log(layers)
     return layers;
 }
