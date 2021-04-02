@@ -59,7 +59,7 @@ body {
     margin-bottom: 5px;
 }
 
-#sidebar_canvas .menu-close svg {
+#sidebar_canvas .menu-close svg, .settingsCloseBox svg {
     fill: #fff;
     stroke: #fff;
 }
@@ -91,7 +91,7 @@ body {
     box-shadow: 0px 0px 20px 0px rgb(0 0 0 / 15%);
     transform: translateX(105vw);
     transition: all .2s ease-in-out;
-    z-index: 9999;
+    z-index: 10;
 }
 
 #settings_infoblock .settingsTitle {
@@ -215,7 +215,7 @@ body {
     width: auto;
 }
 
-.air-menu {
+.air-menu-wrapper {
     height: 100%;
     width: 400px;
     position: fixed;
@@ -232,6 +232,12 @@ body {
     box-shadow: 0 0 0.4em 0 rgba(50, 50, 50, 0.5);
     color: #323232;
     background-color: #f4f6ff;
+}
+
+.air-menu {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
 }
 
 .air-menu .aircraft-data::-webkit-scrollbar {
@@ -279,21 +285,21 @@ body {
     width: 102%;
 }
 
-.air-menu.visible {
+.air-menu-wrapper.visible {
     transform: translate(0, 0);
 }
 
 .air-menu .menu-title {
     display: flex;
-    padding: 8px 10px 5px 15px;
+    padding: 12px 10px 5px 15px;
     align-items: center;
     justify-content: space-between;
-    margin-top: 6px;
 }
 
 .air-menu .menu-title #close-button-menu {
     margin-top: -8px;
-    padding: 5px;
+    margin-right: -5px;
+    padding: 10px;
     cursor: pointer;
 }
 
@@ -833,11 +839,16 @@ div#loader {
     top: 0;
     bottom: 0;
     right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #000;
     opacity: 0.8;
     filter: alpha(opacity=80);
 }
-
+div#loader.hidden{
+    display: none;
+}
 #spinny {
     width: 128px;
     height: 128px;
@@ -887,7 +898,6 @@ div#loader {
 }
 
 .icaoCodeColumn {
-    font-family: monospace;
     text-transform: uppercase;
 }
 
@@ -1141,14 +1151,15 @@ input.error {
 }
 
 .button {
-    background: #00A0E2;
-    background: rgba(0, 160, 226, 1);
+    background: #004cff;
+ 
     min-width: 80px;
-    height: 28px;
+   text-transform: uppercase;
     border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     display: inline-block;
+    padding: 6px 20px;
     margin-right: 10px;
     cursor: pointer;
     text-align: center;
@@ -1174,9 +1185,9 @@ input.error {
 
 #dump1090_infoblock {
     padding: 20px 20px;
-    font-size: 18px;
+    font-size: 16px;
     color: #fff;
-    background-color: #484848
+    background-color: #323232
 }
 
 .infoblock_body td {}
@@ -1366,8 +1377,9 @@ input.error {
 
 .settingsCloseBox {
     position: absolute;
-    right: 15px;
-    top: 20px;
+    right: 2px;
+    top: 3px;
+    padding: 15px;
     cursor: pointer;
 }
 
@@ -1472,23 +1484,78 @@ input.error {
 #column_select {
     display: none;
 }
-
+.svg-calLoader {
+    width: 230px;
+    height: 230px;
+    transform-origin: 115px 115px;
+    animation: 1.4s linear infinite loader-spin;
+  }
+  
+  .cal-loader__plane {
+    fill: #0c99d6;
+  }
+  
+  .cal-loader__path {
+    stroke: #ffffff;
+    animation: 1.4s ease-in-out infinite loader-path;
+  }
+  
+  @keyframes loader-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader-path {
+    0% {
+      stroke-dasharray: 0, 580, 0, 0, 0, 0, 0, 0, 0;
+    }
+    50% {
+      stroke-dasharray: 0, 450, 10, 30, 10, 30, 10, 30, 10;
+    }
+    100% {
+      stroke-dasharray: 0, 580, 0, 0, 0, 0, 0, 0, 0;
+    }
+  }
 @media screen and (max-width: 767px) {
-    #sidebar_container {
-        display: none;
+ 
+    #dump1090_infoblock {
+        padding: 15px;
+        font-size: 14px;
     }
-    #tableinfo {
-        width: 100%;
+    #dump1090_infoblock table {
+        width: 82% !important;
     }
+    #sidebar_canvas .menu-close {
+        z-index: 2;
+        margin-top: 3px;
+        margin-right: 3px;
+    }
+ 
     #sidebar_container {
         width: 100%;
+        z-index: 10;
+    }
+    .table-responsive {
+        overflow-y: auto;
+ 
     }
     .legend {
         margin-bottom: 62px;
     }
     #planes_table {
-        margin-top: 10px;
         overflow-y: auto;
+    }
+    #planes_table_container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        margin-bottom: 53px;
+    }
+    #settings_infoblock {
+        width: 100%;
+    }
+    .air-table.active, .change-layer-mobile.active, #settingsCog1.active {
+        background-color: #0c99d6;
     }
     #tableinfo {
         width: 100%;
@@ -1498,25 +1565,65 @@ input.error {
         position: relative;
     }
     #sidebar_container {
-        height: auto;
+        height: 100%;
+    }
+ 
+    .aircraft-image {
+        height: 212px;
+        width: auto;
+        overflow: hidden;
+    }
+ 
+    .aircraft-image img.spin-animation {
+        max-height: 80px;
+        max-width: 80px;
+
+    }
+    .air-menu .aircraft-data>div {
+        width: 100%
+    }
+    .air-menu-wrapper {
+        height: 100%;
+        overflow-y: auto;
+        width: 100%;
+    }
+    .right-nav {
+        display: none;
+    }
+    .air-menu .aircraft-data {
+        overflow-y: auto;
     }
     #layout_container,
     html,
     body {
         overflow: auto;
     }
+    #layout_container {
+        position: relative;
+    }
     .nav-bottom {
         display: flex;
         align-items: center;
         position: fixed;
         bottom: 0;
+        z-index: 15;
         left: 0;
         right: 0;
         width: 100%;
-        background: rgba(51, 153, 255, .7);
+        background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.25) 200%);
+        transform: translate(0, 0);
+        -webkit-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+    }
+    .nav-bottom.hidden {
+        transform: translateY(200%);
     }
     .ol-scale-line {
         background: rgba(51, 153, 255, .5) !important;
+    }
+    #plane_row_template img {
+        margin: 0;
     }
     .header {
         display: flex;
@@ -1527,6 +1634,12 @@ input.error {
         background: rgba(255, 255, 255, .6);
         align-items: center;
     }
+    .infoblock_body td {
+        width: 50%;
+    }
+    .infoblock_body td:last-child {
+        text-align: right;
+    }
     .close-sidebar {
         display: block;
         z-index: 1;
@@ -1535,9 +1648,7 @@ input.error {
         top: -5px;
         padding: 10px;
     }
-    #dump1090_infoblock table {
-        width: 90% !important;
-    }
+ 
     .header-wrapper {
         display: flex;
         justify-content: space-between;
@@ -1551,10 +1662,11 @@ input.error {
     }
     .ol-scale-line {
         position: absolute;
-        top: 8px;
-        left: 15px;
-        bottom: auto !important;
+        top: auto;
+        left: 10px;
+        bottom: 65px;
         display: inline-flex;
+        background-color: rgba(50, 50, 50, .5) !important;
     }
     .header .logo {
         display: flex;
@@ -1564,22 +1676,33 @@ input.error {
         height: 36px;
         width: auto;
     }
+    #settings_infoblock .settingsTitle {
+        font-size: 14px;
+    }
     .header .logo span {
         font-weight: 700;
         margin-left: 15px;
         font-size: 20px;
     }
     #sidebar_canvas {
-        padding: 15px;
         width: 100%;
+        display: flex;
+        flex-direction: column;
         overflow: hidden;
+        height: 100%;
     }
     .nav-bottom>div {
         flex: 1;
-        padding: 14px 0;
+        height: 100%;
+        padding: 14px 0 17px;
         display: flex;
         justify-content: center;
+        height: 56px;
         align-items: center;
+    }
+    .air-menu {
+        display: block;
+        height: auto;
     }
     .nav-bottom .logo {
         flex-basis: 50px;
@@ -1593,13 +1716,26 @@ input.error {
         display: flex;
         bottom: -15px;
         align-items: center;
-        border: solid 2px rgba(51, 153, 255, 1);
+        border: solid 2px #323232;
         justify-content: center;
+    }
+    .buttonHeader {
+        display: none;
     }
     .nav-bottom>div.logo img {
         height: 50px;
         width: auto;
         margin-bottom: 10px;
+    }
+    .ol-zoom-out::before, .ol-zoom-in::before {
+        background-size: 14px 14px;
+    height: 14px;
+    width: 14px;
+    }
+    .ol-zoom-in, .ol-zoom-out {
+        width: 26px !important;
+    height: 26px !important;
+    background-color: rgba(50, 50, 50, .7) !important;
     }
 }
 
@@ -1616,12 +1752,6 @@ input.error {
     }
     .settingsCheckbox {
         background-image: url('/dump1090/images/box-empty@2x.png');
-    }
-    .ol-zoom-out {
-        background-image: url("/dump1090/images/zoom-out@2x.png");
-    }
-    .ol-zoom-in {
-        background-image: url("/dump1090/images/zoom-in@2x.png");
     }
     #toggle_sidebar_button.show_sidebar {
         background-image: url("/dump1090/images/table-icon@2x.png");
@@ -1647,12 +1777,6 @@ input.error {
     }
     .settingsCheckbox {
         background-image: url('/dump1090/images/box-empty@3x.png');
-    }
-    .ol-zoom-out {
-        background-image: url("/dump1090/images/zoom-out@3x.png");
-    }
-    .ol-zoom-in {
-        background-image: url("/dump1090/images/zoom-in@3x.png");
     }
     #toggle_sidebar_button.show_sidebar {
         background-image: url("/dump1090/images/table-icon@3x.png");

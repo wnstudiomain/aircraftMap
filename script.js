@@ -17,6 +17,7 @@ var FollowSelected = false;
 var infoBoxOriginalPosition = {};
 var customAltitudeColors = true;
 var airData = false;
+var width = $(window).width();
 
 var SpecialSquawks = {
     '7500': { cssClass: 'squawk7500', markerColor: 'rgb(255, 85, 85)', text: 'Aircraft Hijacking' },
@@ -264,14 +265,21 @@ function initialize() {
         }
     });
 
-    $('#change-layer').on('click',function(){
+    $('.change-layer').on('click',function(){ 
+        $(".change-layer-mobile").toggleClass('active')
         let layer = $(this).attr('data-layer')
+        
         if (layer == 'basic_layer') {
-            $(this).html('<img src="/dump1090/images/sun (1) 1.svg">')
+            if (width >= 767) {
+                $(this).html('<img src="/dump1090/images/sun (1) 1.svg">')
+            }
             $(this).attr('data-layer','carto_dark_all')
         }
         else {
-            $(this).html('<img src="/dump1090/images/night (1).svg">')
+            if (width >= 767) {
+                $(this).html('<img src="/dump1090/images/night (1).svg">')
+            }
+
             $(this).attr('data-layer','basic_layer')
         }
     })
@@ -299,10 +307,11 @@ function initialize() {
             $('#selected_infoblock').removeClass('infoblock-container-small');
         }
     });
-
+ 
     // Set up event handlers for buttons
-    $("#toggle_sidebar_button").click(toggleSidebarVisibility);
+    $(".toggle_sidebar_button").click(toggleSidebarVisibility);
     $("#expand_sidebar_button").click(expandSidebar);
+
     $('#close-sidebar').click(toggleSidebarVisibility);
     $("#show_map_button").click(showMap);
 
@@ -317,8 +326,13 @@ function initialize() {
     // Initialize other controls
     initializeUnitsSelector();
 
-    $('#toggle_settings').on('click', function() {
-            $('#settings_infoblock').addClass('visible');
+    $('.toggle_settings').on('click', function() {
+        if ($('#sidebar_container').hasClass('visible')) {
+            $('#sidebar_container').removeClass('visible')
+            $('.toggle_sidebar_button').removeClass('active')
+        }
+            $('#settings_infoblock').toggleClass('visible');
+            $("#settingsCog1").toggleClass('active')
         })
         // Set up altitude filter button event handlers and validation options
     $("#altitude_filter_form").submit(onFilterByAltitude);
@@ -362,6 +376,7 @@ function initialize() {
 
     $('#settings_close').on('click', function() {
         $('#settings_infoblock').removeClass('visible');
+        $('#settingsCog1').removeClass('active')
     });
 
     $('#groundvehicle_filter').on('click', function() {
@@ -870,14 +885,16 @@ function initialize_map() {
             adjustSelectedInfoBlockPosition();
             evt.stopPropagation();
 
-            $('.air-menu').addClass('visible');
+            $('.air-menu-wrapper').addClass('visible');
+            $('.nav-bottom').addClass('hidden');
         } else {
             deselectAllPlanes();
             evt.stopPropagation();
         }
     });
     $('#close-button-menu').click(function() {
-            $('.air-menu').removeClass('visible');
+            $('.air-menu-wrapper').removeClass('visible');
+            $('.nav-bottom').removeClass('hidden');
             setTimeout(function() {
                 $('.aircraft-image img').addClass('spin-animation').attr('src', '/dump1090/images/radar.svg')
                 $('.airline-name span').text('N/A');
@@ -902,20 +919,22 @@ function initialize_map() {
 
         })
         // show the hover box
-    OLMap.on('pointermove', function(evt) {
-        var hex = evt.map.forEachFeatureAtPixel(evt.pixel,
-            function(feature, layer) {
-                return feature.hex;
+    if (width > 767) {
+        OLMap.on('pointermove', function(evt) {
+            var hex = evt.map.forEachFeatureAtPixel(evt.pixel,
+                function(feature, layer) {
+                    return feature.hex;
+                }
+            );
+            if (hex) {
+                this.getTargetElement().style.cursor = 'pointer';
+                highlightPlaneByHex(hex);
+            } else {
+                removeHighlight();
+                this.getTargetElement().style.cursor = '';
             }
-        );
-        if (hex) {
-            this.getTargetElement().style.cursor = 'pointer';
-            highlightPlaneByHex(hex);
-        } else {
-            removeHighlight();
-            this.getTargetElement().style.cursor = '';
-        }
-    })
+        })
+    }
     OLMap.getViewport().style.cursor = "";
     OLMap.on('pointerdrag', function(evt) {
         var hit = this.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
@@ -935,7 +954,7 @@ function initialize_map() {
         toggleLayer('#sitepos_checkbox', 'site_pos');
         toggleLayer('#actrail_checkbox', 'ac_trail');
         toggleLayer('#acpositions_checkbox', 'ac_positions');
-        toggleLayer('#change-layer', 'carto_dark_all');
+        toggleLayer('.change-layer', 'carto_dark_all');
     });
 
     // Add home marker if requested
@@ -1722,7 +1741,8 @@ function selectPlaneByHex(hex, autofollow) {
         Planes[SelectedPlane].updateMarker();
         $(Planes[SelectedPlane].tr).addClass("selected");
         doAjax(Planes[SelectedPlane]);
-        $('.air-menu').addClass('visible');
+        $('.air-menu-wrapper').addClass('visible');
+        $('.nav-bottom').addClass('hidden');
     } else {
         SelectedPlane = null;
     }
@@ -1888,6 +1908,11 @@ function toggleSidebarVisibility(e) {
     }
     $("#sidebar_container").toggleClass('visible');
     $("#expand_sidebar_control").toggle();
+    $(".air-table").toggleClass('active')
+    if ($('#settings_infoblock').hasClass('visible')) {
+        $('#settings_infoblock').removeClass('visible')
+        $('#settingsCog1').removeClass('active')
+    }
     //updateMapSize();
 }
 
@@ -1896,6 +1921,8 @@ function SidebarRemove(e) {
         e.preventDefault();
     }
     $("#sidebar_container").removeClass('visible');
+    $(".air-table").removeClass('active');
+
 }
 
 var timePanel = function changeTime() {
