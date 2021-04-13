@@ -1742,52 +1742,6 @@ input.error {
 
 /* Retina 2x images */
 
-@media (-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
-    .settingsCloseBox {
-        background-image: url('/dump1090/images/close-settings@2x.png');
-    }
-    .settingsCheckboxChecked {
-        background-image: url('/dump1090/images/box-checked@2x.png') !important;
-    }
-    .settingsCheckbox {
-        background-image: url('/dump1090/images/box-empty@2x.png');
-    }
-    #toggle_sidebar_button.show_sidebar {
-        background-image: url("/dump1090/images/table-icon@2x.png");
-    }
-    #expand_sidebar_button {
-        background-image: url("/dump1090/images/table-icon@2x.png");
-    }
-    #toggle_sidebar_button.hide_sidebar {
-        background-image: url("/dump1090/images/map-icon@2x.png");
-    }
-}
-
-
-/* Retina 3x images */
-
-@media (-webkit-min-device-pixel-ratio: 3),
-(min-resolution: 192dpi) {
-    .settingsCloseBox {
-        background-image: url('/dump1090/images/close-settings@3x.png');
-    }
-    .settingsCheckboxChecked {
-        background-image: url('/dump1090/images/box-checked@3x.png') !important;
-    }
-    .settingsCheckbox {
-        background-image: url('/dump1090/images/box-empty@3x.png');
-    }
-    #toggle_sidebar_button.show_sidebar {
-        background-image: url("/dump1090/images/table-icon@3x.png");
-    }
-    #expand_sidebar_button {
-        background-image: url("/dump1090/images/table-icon@3x.png");
-    }
-    #toggle_sidebar_button.hide_sidebar {
-        background-image: url("/dump1090/images/map-icon@3x.png");
-    }
-}
 
 :root {
     --color-1: rgba(241, 72, 73, 1);

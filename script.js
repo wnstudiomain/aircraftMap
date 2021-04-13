@@ -265,10 +265,10 @@ function initialize() {
         }
     });
 
-    $('.change-layer').on('click',function(){ 
+    $('.change-layer').on('click',function(){
         $(".change-layer-mobile").toggleClass('active')
         let layer = $(this).attr('data-layer')
-        
+
         if (layer == 'basic_layer') {
             if (width >= 767) {
                 $(this).html('<img src="/dump1090/images/sun (1) 1.svg">')
@@ -307,7 +307,7 @@ function initialize() {
             $('#selected_infoblock').removeClass('infoblock-container-small');
         }
     });
- 
+
     // Set up event handlers for buttons
     $(".toggle_sidebar_button").click(toggleSidebarVisibility);
     $("#expand_sidebar_button").click(expandSidebar);
@@ -359,7 +359,7 @@ function initialize() {
     if (ColorByAlt.air.h.length === 3 && ColorByAlt.air.h[0].alt === 2000 && ColorByAlt.air.h[0].val === 20 && ColorByAlt.air.h[1].alt === 10000 && ColorByAlt.air.h[1].val === 140 && ColorByAlt.air.h[2].alt === 40000 && ColorByAlt.air.h[2].val === 300) {
         customAltitudeColors = false;
     }
- 
+
     $("#altitude_filter_reset_button").click(onResetAltitudeFilter);
 
     $('#settingsCog').on('click', function() {
@@ -429,7 +429,7 @@ function initialize() {
     toggleAllPlanes(false);
     toggleGroupByDataType(false);
     toggleAllColumns(false);
- 
+
 
     // Get receiver metadata, reconfigure using it, then continue
     // with initialization
@@ -730,7 +730,7 @@ function initialize_map() {
 
 
     layers = createBaseLayers();
- 
+
 
     var iconsLayer = new ol.layer.Vector({
         name: 'ac_positions',
@@ -1026,7 +1026,7 @@ function initialize_map() {
     // NB: altitudes are in _meters_, you can specify a list of altitudes
 
     // kick off an ajax request that will add the rings when it's done
-    /*var request = $.ajax({
+    var request = $.ajax({
         url: 'upintheair.json',
         timeout: 5000,
         cache: true,
@@ -1040,9 +1040,9 @@ function initialize_map() {
                 width: 1
             })
         });
-
+        console.log(data)
         for (var i = 0; i < data.rings.length; ++i) {
-            var geom = new ol.geom.LineString();
+            var geom = new ol.geom.LineString([]);
             var points = data.rings[i].points;
             if (points.length > 0) {
                 for (var j = 0; j < points.length; ++j) {
@@ -1060,7 +1060,7 @@ function initialize_map() {
 
     request.fail(function (jqxhr, status, error) {
         // no rings available, do nothing
-    }); */
+    });
 }
 
 function createSiteCircleFeatures() {
@@ -2295,7 +2295,7 @@ function changeLayer(nameLayer) {
 
     console.log(layerGroup)
 
-    
+
     ol.control.LayerSwitcher.forEachRecursive(layerGroup, function(lyr) {
         var visible = false;
         //lyr.setVisible(true);
@@ -2306,7 +2306,7 @@ function changeLayer(nameLayer) {
         if (lyr.get('name') === nameLayer && nameLayer === 'carto_dark_all') {
             console.log(lyr)
             lyr.setVisible(!lyr.getVisible());
-        } 
+        }
         else if (lyr.get('name') === nameLayer && nameLayer === 'basic_layer') {
             console.log(lyr)
             lyr.setVisible(!lyr.getVisible());
