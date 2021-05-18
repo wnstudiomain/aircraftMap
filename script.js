@@ -469,7 +469,7 @@ function start_load_history() {
     let params = new URLSearchParams(url.search);
     if (PositionHistorySize > 0 && params.get('nohistory') !== 'true') {
         $("#loader_progress").attr('max', PositionHistorySize);
-        console.log("Starting to load history (" + PositionHistorySize + " items)");
+        //console.log("Starting to load history (" + PositionHistorySize + " items)");
         //Load history items in parallel
         for (var i = 0; i < PositionHistorySize; i++) {
             load_history_item(i);
@@ -513,13 +513,13 @@ function load_history_item(i) {
 function end_load_history() {
     $("#loader").addClass("hidden");
 
-    console.log("Done loading history");
+    //console.log("Done loading history");
 
     if (PositionHistoryBuffer.length > 0) {
         var now, last = 0;
 
         // Sort history by timestamp
-        console.log("Sorting history");
+        //console.log("Sorting history");
         PositionHistoryBuffer.sort(function(x, y) {
             return (x.now - y.now);
         });
@@ -541,7 +541,7 @@ function end_load_history() {
         }
 
         // Final pass to update all planes to their latest state
-        console.log("Final history cleanup pass");
+       // console.log("Final history cleanup pass");
         for (var i = 0; i < PlanesOrdered.length; ++i) {
             var plane = PlanesOrdered[i];
             plane.updateTick(now);
@@ -552,7 +552,7 @@ function end_load_history() {
 
     PositionHistoryBuffer = null;
 
-    console.log("Completing init");
+   // console.log("Completing init");
 
     refreshTableInfo();
     refreshSelected();
@@ -561,7 +561,7 @@ function end_load_history() {
 
     // Setup our timer to poll from the server.
     RefreshInterval = 1000;
-    console.log(RefreshInterval)
+
     window.setInterval(fetchData, RefreshInterval);
     window.setInterval(reaper, 60000);
 
@@ -1452,8 +1452,6 @@ function refreshTableInfo() {
     TrackedAircraft = 0
     TrackedAircraftPositions = 0
     TrackedHistorySize = 0
-
-    console.log(DisplayUnits);
 
     $(".altitudeUnit").text(get_unit_label("altitude", DisplayUnits));
     $(".speedUnit").text(get_unit_label("speed", DisplayUnits));
@@ -2426,7 +2424,6 @@ function setDisplayUnits(units) {
     } else if (units === 'imperial') {
         localStorage['displayUnits'] = "imperial";
     }
-    console.log('123')
     onDisplayUnitsChanged();
 }
 
