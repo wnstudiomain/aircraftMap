@@ -1,7 +1,7 @@
 <?php
 	require "auth.php";
 ?>
-<!DOCTYPE HTML>
+ <!doctype html>
 <html>
 
 <head>
@@ -18,7 +18,7 @@
     <script src="ol/v6.3.1/ol.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.css" />
     <script type="text/javascript" src="https://cdn.rawgit.com/Viglino/ol-ext/master/dist/ol-ext.min.js"></script>
-    <link rel="stylesheet" href="ol/ol-layerswitcher.css" type="text/css" />
+ 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -375,6 +375,10 @@
                 <div class="settingsOptionContainer">
                     <div class="settingsCheckbox" id="sitepos_checkbox"></div>
                     <div class="settingsText">Отобразить положение радара</div>
+                </div>
+                <div class="settingsOptionContainer">
+                    <div class="settingsCheckbox" id="sitering_checkbox"></div>
+                    <div class="settingsText">Отобразить дальность действия</div>
                 </div>
                 <div class="settingsOptionContainer">
                     <div class="settingsCheckbox" id="actrail_checkbox"></div>

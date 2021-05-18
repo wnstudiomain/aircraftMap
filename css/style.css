@@ -994,6 +994,7 @@ select.error, textarea.error, input.error {
 
 .layer-switcher {
     bottom: 20px !important;
+    display: none;
     top: auto !important;
     right: 80px !important;
 }

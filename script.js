@@ -4,6 +4,7 @@
 // Define our global variables
 var OLMap = null;
 var StaticFeatures = new ol.Collection();
+var StaticFeaturesImg = new ol.Collection();
 var SiteCircleFeatures = new ol.Collection();
 var PlaneIconFeatures = new ol.Collection();
 var PlaneTrailFeatures = new ol.Collection();
@@ -749,6 +750,15 @@ function initialize_map() {
                 type: 'overlay',
                 title: 'Site position and range rings',
                 source: new ol.source.Vector({
+                    features: StaticFeaturesImg,
+                })
+            }),
+
+            new ol.layer.Vector({
+                name: 'ring_pos',
+                type: 'overlay',
+                title: 'Site range rings',
+                source: new ol.source.Vector({
                     features: StaticFeatures,
                 })
             }),
@@ -778,7 +788,7 @@ function initialize_map() {
     ol.control.LayerSwitcher.forEachRecursive(layerGroup, function(lyr) {
         if (!lyr.get('name'))
             return;
-
+        console.log(lyr.get('name'))
         if (lyr.get('type') === 'base') {
             baseCount++;
             if (MapType === lyr.get('name')) {
@@ -790,13 +800,11 @@ function initialize_map() {
 
             MapType = localStorage['MapType'] = 'basic_layer';
 
-            /*lyr.on('change:visible', function(evt) {
-                if (evt.target.getVisible()) {
-                    MapType = localStorage['MapType'] = evt.target.get('name');
-                }
-            });*/
         } else if (lyr.get('type') === 'overlay') {
             var visible = localStorage['layer_' + lyr.get('name')];
+            if (lyr.get('name') === 'ring_pos') {
+                lyr.setVisible(visible === "false");
+            }
             if (visible != undefined) {
                 // javascript, why must you taunt me with gratuitous type problems
                 lyr.setVisible(visible === "true");
@@ -818,7 +826,7 @@ function initialize_map() {
             }
         });
     }
-
+ 
     OLMap = new ol.Map({
         target: 'map_canvas',
         layers: layers,
@@ -951,6 +959,7 @@ function initialize_map() {
     });
     // handle the layer settings pane checkboxes
     OLMap.once('postrender', function(e) {
+        toggleLayer('#sitering_checkbox', 'ring_pos');
         toggleLayer('#sitepos_checkbox', 'site_pos');
         toggleLayer('#actrail_checkbox', 'ac_trail');
         toggleLayer('#acpositions_checkbox', 'ac_positions');
@@ -970,7 +979,7 @@ function initialize_map() {
 
         var feature = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat(SitePosition)));
         feature.setStyle(markerStyle);
-        StaticFeatures.push(feature);
+        StaticFeaturesImg.push(feature);
 
         var pos = ol.proj.fromLonLat(SitePosition);
         var marker = new ol.Overlay({
