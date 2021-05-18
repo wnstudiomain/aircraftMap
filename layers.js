@@ -41,6 +41,5 @@ function createBaseLayers() {
         }));
     }
 
-    console.log(layers)
     return layers;
 }

@@ -41,7 +41,7 @@ UserMap = "radar.kml"; // your KML URL (publicly available domain)
 SiteShow = false; // true to show a center marker
 SiteLat = 45.0; // position of the marker
 SiteLon = 9.0;
-SiteName = "ЮЗГУ"; // tooltip of the marker
+SiteName = "Панель управления"; // tooltip of the marker
 
 // -- Marker settings -------------------------------------
 
@@ -109,7 +109,7 @@ DefaultSiteCirclesBaseDistance = 100;
 DefaultSiteCirclesInterval = 50;
 
 // Controls page title, righthand pane when nothing is selected
-PageName = "ЮЗГУ";
+PageName = "Панель управления";
 
 // Show country flags by ICAO addresses?
 ShowFlags = true;

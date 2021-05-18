@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
     -ms-overflow-style: -ms-autohiding-scrollbar;
     margin: 0;
     padding: 0;
@@ -101,8 +100,7 @@ body {
     background-color: #323232;
 }
 
-#sidebar_container.visible,
-#settings_infoblock.visible {
+#sidebar_container.visible, #settings_infoblock.visible {
     transform: translate(0, 0);
 }
 
@@ -152,7 +150,7 @@ body {
     position: absolute;
     right: 15px;
     top: 21px;
-    background-image: url('/dump1090/images/close-settings.png');
+    background-image: url('../images/close-settings.png');
     background-size: cover;
     width: 20px;
     height: 20px;
@@ -211,8 +209,9 @@ body {
 }
 
 .logo img {
-    height: 48px;
+    height: 65px;
     width: auto;
+    margin-left: 3px;
 }
 
 .air-menu-wrapper {
@@ -421,11 +420,7 @@ body {
     display: flex;
     flex-wrap: wrap;
 }
-
-aircraft-info>div {
-    flex 1 1 50%;
-}
-
+ 
 .air-menu .airportTime {
     display: flex;
     padding: 0 10px 0px;
@@ -434,8 +429,7 @@ aircraft-info>div {
     color: rgba(0, 0, 0, 0.6);
 }
 
-.air-menu .airportCity>div,
-.airportTime>div {
+.air-menu .airportCity>div, .airportTime>div {
     display: inline-flex;
     justify-content: space-between;
     text-align: left;
@@ -527,8 +521,7 @@ aircraft-info>div {
     margin-bottom: 6px;
 }
 
-#dump1090_total_ac,
-#dump1090_total_ac_positions {
+#dump1090_total_ac, #dump1090_total_ac_positions, #dump1090_message_rate {
     margin-left: 5px;
 }
 
@@ -655,8 +648,7 @@ aircraft-info>div {
     left: 0 !important;
 }
 
-#toggle_sidebar_control .ol-zoom-in,
-#toggle_sidebar_control .ol-zoom-out {
+#toggle_sidebar_control .ol-zoom-in, #toggle_sidebar_control .ol-zoom-out {
     width: 42px !important;
     height: 42px !important;
     margin-top: 25px !important;
@@ -678,7 +670,7 @@ aircraft-info>div {
 }
 
 #toggle_sidebar_button.show_sidebar {
-    background-image: url("/dump1090/images/airplane 4.svg");
+    background-image: url("../images/airplane 4.svg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: 34px 34px;
@@ -704,7 +696,7 @@ aircraft-info>div {
 }
 
 #expand_sidebar_button {
-    background-image: url("/dump1090/images/table-icon.png");
+    background-image: url("../images/table-icon.png");
     background-size: cover;
 }
 
@@ -722,7 +714,7 @@ aircraft-info>div {
     background-position: 0px;
     background-color: transparent;
     border: none;
-    background-image: url("/dump1090/images/toggle-width@2x.png");
+    background-image: url("../images/toggle-width@2x.png");
     background-size: cover;
     display: none !important;
 }
@@ -846,9 +838,11 @@ div#loader {
     opacity: 0.8;
     filter: alpha(opacity=80);
 }
-div#loader.hidden{
+
+div#loader.hidden {
     display: none;
 }
+
 #spinny {
     width: 128px;
     height: 128px;
@@ -877,8 +871,7 @@ div#loader.hidden{
     justify-content: space-between;
 }
 
-#units_container,
-#altitude_filter_form {
+#units_container, #altitude_filter_form {
     font-size: small;
     margin: 10px 0 10px 0;
 }
@@ -995,9 +988,7 @@ div#loader.hidden{
     padding-top: 8px;
 }
 
-select.error,
-textarea.error,
-input.error {
+select.error, textarea.error, input.error {
     color: #FF0000;
 }
 
@@ -1010,7 +1001,6 @@ input.error {
 .nav-bottom {
     display: none;
 }
-
 
 /* new css */
 
@@ -1093,6 +1083,12 @@ input.error {
     text-decoration: underline;
 }
 
+.infoBlockTitleText.infoblock_body {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+}
+
 #header {
     width: 100%;
     height: 60px;
@@ -1102,6 +1098,11 @@ input.error {
     position: absolute;
     top: 0;
     display: none;
+}
+
+.infoblock_body td {
+    display: flex;
+    width: 33%;
 }
 
 .flightawareLogo {
@@ -1151,10 +1152,9 @@ input.error {
 }
 
 .button {
-    background: #004cff;
- 
+    background: #00A0E2;
     min-width: 80px;
-   text-transform: uppercase;
+    text-transform: uppercase;
     border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -1165,8 +1165,7 @@ input.error {
     text-align: center;
 }
 
-.lightblue-link,
-.lightblue-link a {
+.lightblue-link, .lightblue-link a {
     color: #00A0E2;
 }
 
@@ -1174,8 +1173,7 @@ input.error {
     margin-top: 15px;
 }
 
-.table td,
-.table th {
+.table td, .table th {
     border-top: 1px solid #ececec;
 }
 
@@ -1189,8 +1187,6 @@ input.error {
     color: #fff;
     background-color: #323232
 }
-
-.infoblock_body td {}
 
 .settingsContainer {
     padding-right: 60px;
@@ -1298,8 +1294,10 @@ input.error {
     font-weight: bold;
 }
 
-.table td,
-.table th {
+.infoBlockTitleText div {
+    text-align: left;
+}
+.table td, .table th {
     text-align: center;
     padding: 1rem;
 }
@@ -1349,15 +1347,13 @@ input.error {
     align-items: flex-start;
     padding-bottom: 15px;
     text-align: left;
-    К justify-content: flex-start;
+    justify-content: flex-start;
 }
 
-.settingsCheckbox,
-.columnSelectCheckbox,
-.columnSelectAllCheckbox {
+.settingsCheckbox, .columnSelectCheckbox, .columnSelectAllCheckbox {
     width: 24px;
     height: 11px;
-    background-image: url('/dump1090/images/box-empty.png');
+    background-image: url('../images/box-empty.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -1372,7 +1368,7 @@ input.error {
 }
 
 .settingsCheckboxChecked {
-    background-image: url('/dump1090/images/box-checked.png') !important;
+    background-image: url('../images/box-checked.png') !important;
 }
 
 .settingsCloseBox {
@@ -1408,7 +1404,7 @@ input.error {
 }
 
 #altitude_chart_button {
-    background-image: url('/dump1090/images/alt_legend_feet.svg');
+    background-image: url('../images/alt_legend_feet.svg');
     background-size: cover;
     background-color: transparent;
     width: 100%;
@@ -1419,9 +1415,8 @@ input.error {
 }
 
 .altitudeMeters {
-    background-image: url('/dump1090/images/alt_legend_meters.svg') !important;
+    background-image: url('../images/alt_legend_meters.svg') !important;
 }
-
 
 /* remove the blue highlighting around the map buttons */
 
@@ -1484,60 +1479,133 @@ input.error {
 #column_select {
     display: none;
 }
+
+.form-signin {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    margin: auto;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    z-index: 2;
+    padding-bottom: 50px;
+}
+
+.logo-login {
+    margin-top: auto;
+}
+ 
+.form-signin .btn {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: .25rem;
+    padding: 0.8rem;
+    background-color: #3d3d3d;
+    border-color: #3d3d3d;
+
+}
+.form-signin .btn:hover {
+    background-color: #323232;
+    border-color: #323232;
+}
+ 
+.form-signin .form-control {
+    border: 1px solid #e5e5e5;
+    color: #666;
+    padding: 1rem 1.2rem;
+    font-size: 1.1rem;
+}
+
+.form-signin .form-floating>label {
+    color: #666;
+    padding: 1rem 1.2rem;
+    font-size: 14px;
+}
+.main {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background: url('/sky/images/air.jpg');
+    height: 100%;
+    position: relative;  
+}
+.main::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    display: flex;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, .7);
+    background: transparent;
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0.6)), color-stop(100%, rgba(255, 255, 255, 0.4)));
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
+    background: -o-linear-gradient(top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
+    background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 100%);
+}
 .svg-calLoader {
     width: 230px;
     height: 230px;
     transform-origin: 115px 115px;
     animation: 1.4s linear infinite loader-spin;
-  }
-  
-  .cal-loader__plane {
+}
+
+.cal-loader__plane {
     fill: #0c99d6;
-  }
-  
-  .cal-loader__path {
+}
+
+.cal-loader__path {
     stroke: #ffffff;
     animation: 1.4s ease-in-out infinite loader-path;
-  }
-  
-  @keyframes loader-spin {
+}
+
+@keyframes loader-spin {
     to {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
-  @keyframes loader-path {
+}
+
+@keyframes loader-path {
     0% {
-      stroke-dasharray: 0, 580, 0, 0, 0, 0, 0, 0, 0;
+        stroke-dasharray: 0, 580, 0, 0, 0, 0, 0, 0, 0;
     }
     50% {
-      stroke-dasharray: 0, 450, 10, 30, 10, 30, 10, 30, 10;
+        stroke-dasharray: 0, 450, 10, 30, 10, 30, 10, 30, 10;
     }
     100% {
-      stroke-dasharray: 0, 580, 0, 0, 0, 0, 0, 0, 0;
+        stroke-dasharray: 0, 580, 0, 0, 0, 0, 0, 0, 0;
     }
-  }
+}
+
 @media screen and (max-width: 767px) {
- 
+    .form-signin {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
     #dump1090_infoblock {
         padding: 15px;
         font-size: 14px;
     }
     #dump1090_infoblock table {
-        width: 82% !important;
+        width: 88% !important;
     }
     #sidebar_canvas .menu-close {
         z-index: 2;
         margin-top: 3px;
         margin-right: 3px;
     }
- 
     #sidebar_container {
         width: 100%;
         z-index: 10;
     }
     .table-responsive {
         overflow-y: auto;
- 
     }
     .legend {
         margin-bottom: 62px;
@@ -1567,17 +1635,14 @@ input.error {
     #sidebar_container {
         height: 100%;
     }
- 
     .aircraft-image {
         height: 212px;
         width: auto;
         overflow: hidden;
     }
- 
     .aircraft-image img.spin-animation {
         max-height: 80px;
         max-width: 80px;
-
     }
     .air-menu .aircraft-data>div {
         width: 100%
@@ -1593,9 +1658,7 @@ input.error {
     .air-menu .aircraft-data {
         overflow-y: auto;
     }
-    #layout_container,
-    html,
-    body {
+    #layout_container, html, body {
         overflow: auto;
     }
     #layout_container {
@@ -1634,8 +1697,15 @@ input.error {
         background: rgba(255, 255, 255, .6);
         align-items: center;
     }
+    .infoBlockTitleText {
+        display: flex;
+        justify-content: space-between;
+    }
     .infoblock_body td {
-        width: 50%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
     }
     .infoblock_body td:last-child {
         text-align: right;
@@ -1648,7 +1718,6 @@ input.error {
         top: -5px;
         padding: 10px;
     }
- 
     .header-wrapper {
         display: flex;
         justify-content: space-between;
@@ -1656,6 +1725,9 @@ input.error {
     }
     .layer-switcher {
         display: none;
+    }
+    #dump1090_total_ac, #dump1090_total_ac_positions, #dump1090_message_rate {
+        margin-left: 0;
     }
     .ol-scale-line-inner {
         width: 50px !important;
@@ -1723,25 +1795,23 @@ input.error {
         display: none;
     }
     .nav-bottom>div.logo img {
-        height: 50px;
+        height: 54px;
         width: auto;
-        margin-bottom: 10px;
+        margin-bottom: 14px;
     }
     .ol-zoom-out::before, .ol-zoom-in::before {
         background-size: 14px 14px;
-    height: 14px;
-    width: 14px;
+        height: 14px;
+        width: 14px;
     }
     .ol-zoom-in, .ol-zoom-out {
         width: 26px !important;
-    height: 26px !important;
-    background-color: rgba(50, 50, 50, .7) !important;
+        height: 26px !important;
+        background-color: rgba(50, 50, 50, .7) !important;
     }
 }
 
-
 /* Retina 2x images */
-
 
 :root {
     --color-1: rgba(241, 72, 73, 1);

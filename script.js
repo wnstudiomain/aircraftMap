@@ -271,13 +271,13 @@ function initialize() {
 
         if (layer == 'basic_layer') {
             if (width >= 767) {
-                $(this).html('<img src="/dump1090/images/sun (1) 1.svg">')
+                $(this).html('<img src="/sky/images/sun (1) 1.svg">')
             }
             $(this).attr('data-layer','carto_dark_all')
         }
         else {
             if (width >= 767) {
-                $(this).html('<img src="/dump1090/images/night (1).svg">')
+                $(this).html('<img src="/sky/images/night (1).svg">')
             }
 
             $(this).attr('data-layer','basic_layer')
@@ -605,7 +605,7 @@ function applyUrlQueryStrings() {
             break;
         }
     }
-
+ 
     if (needReset) {
         resetMap();
     }
@@ -963,7 +963,7 @@ function initialize_map() {
         var markerStyle = new ol.style.Style({
             image: new ol.style.Icon({
                 opacity: 1,
-                src: '/dump1090/images/placeholder.svg',
+                src: '/sky/images/placeholder.svg',
                 scale: 0.5
             })
         });
@@ -1040,7 +1040,6 @@ function initialize_map() {
                 width: 1
             })
         });
-        console.log(data)
         for (var i = 0; i < data.rings.length; ++i) {
             var geom = new ol.geom.LineString([]);
             var points = data.rings[i].points;
@@ -1454,6 +1453,8 @@ function refreshTableInfo() {
     TrackedAircraftPositions = 0
     TrackedHistorySize = 0
 
+    console.log(DisplayUnits);
+
     $(".altitudeUnit").text(get_unit_label("altitude", DisplayUnits));
     $(".speedUnit").text(get_unit_label("speed", DisplayUnits));
     $(".distanceUnit").text(get_unit_label("distance", DisplayUnits));
@@ -1712,7 +1713,6 @@ function sortBy(id, sc, se) {
 }
 
 function selectPlaneByHex(hex, autofollow) {
-    console.log("select: " + hex);
     // If SelectedPlane has something in it, clear out the selected
     if (SelectedAllPlanes) {
         deselectAllPlanes();
@@ -2087,7 +2087,7 @@ function isPointInsideExtent(x, y, extent) {
 function initializeUnitsSelector() {
     // Get display unit preferences from local storage
     if (!localStorage.getItem('displayUnits')) {
-        localStorage['displayUnits'] = "nautical";
+        localStorage['displayUnits'] = "metric";
     }
     var displayUnits = localStorage['displayUnits'];
     DisplayUnits = displayUnits;
@@ -2290,35 +2290,6 @@ function getAirframesModeSLink(code) {
 
     return "";
 }
-/*
-function changeLayer(nameLayer) {
-
-    console.log(layerGroup)
-
-
-    ol.control.LayerSwitcher.forEachRecursive(layerGroup, function(lyr) {
-        var visible = false;
-        //lyr.setVisible(true);
-        //console.log(lyr)
-        //console.log(lyr.get('name'))
-
-
-        if (lyr.get('name') === nameLayer && nameLayer === 'carto_dark_all') {
-            console.log(lyr)
-            lyr.setVisible(!lyr.getVisible());
-        }
-        else if (lyr.get('name') === nameLayer && nameLayer === 'basic_layer') {
-            console.log(lyr)
-            lyr.setVisible(!lyr.getVisible());
-        }
-        lyr.on('change:visible', function(evt) {
-            if (evt.target.getVisible()) {
-                MapType = localStorage['MapType'] = evt.target.get('name');
-            }
-        });
-})
-}
-*/
 
 
 // takes in an elemnt jQuery path and the OL3 layer name and toggles the visibility based on clicking it
@@ -2455,6 +2426,7 @@ function setDisplayUnits(units) {
     } else if (units === 'imperial') {
         localStorage['displayUnits'] = "imperial";
     }
+    console.log('123')
     onDisplayUnitsChanged();
 }
 
@@ -2601,7 +2573,7 @@ async function doAjax(SelectedPlane) {
         },
         dataType: 'json',
         beforeSend: function() {
-            $('.aircraft-image img').attr('src', '/dump1090/images/radar.svg').addClass('spin-animation');
+            $('.aircraft-image img').attr('src', '/sky/images/radar.svg').addClass('spin-animation');
         },
     });
     if (image.success !== false) {
@@ -2664,7 +2636,7 @@ async function doAjax(SelectedPlane) {
             if (aircraft.images.medium !== undefined && aircraftImage.src !== null) {
                 $('.aircraft-image img').removeClass('spin-animation').attr('src', aircraftImage.src)
             } else {
-                $('.aircraft-image img').removeClass('spin-animation').attr('src', '/dump1090/images/no-flight.svg')
+                $('.aircraft-image img').removeClass('spin-animation').attr('src', '/sky/images/no-flight.svg')
             }
             if (aircraftFlight !== null) {
                 $('.menu-title .menu-title-wrapper h2').text(aircraftFlight);
@@ -2748,7 +2720,7 @@ async function doAjax(SelectedPlane) {
             $('#aircraft-type').text(aircraftModel);
             $('#aircraft-reg').text(aircraftReg);
         } else {
-            $('.aircraft-image img').removeClass('spin-animation').attr('src', '/dump1090/images/no-flight.svg')
+            $('.aircraft-image img').removeClass('spin-animation').attr('src', '/sky/images/no-flight.svg')
             $('.airline-name span').text('N/A');
             if (plane.flight !== null && plane.flight !== "") {
                 $('.menu-title .menu-title-wrapper h2').text(plane.flight);

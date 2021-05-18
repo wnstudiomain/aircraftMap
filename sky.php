@@ -397,8 +397,7 @@
             <div class="right-nav">
                 <div class="logo">
                     <div class="circle-logo">
-                        <img src="/sky/images/logo.svg">
-                        <p>ЮЗГУ</p>
+                        <img src="/sky/images/Shit.png">
                     </div>
                 </div>
                 <div id="toggle_sidebar_control" class="ol-unselectable ol-control">
@@ -441,9 +440,9 @@
 
 
                         <tr class="infoblock_body infoBlockTitleText">
-                            <td><span class="infoBlockTitleText">Всего бортов:</span> <span id="dump1090_total_ac">n/a</span></td>
+                            <td><span class="infoBlockTitleText">Бортов:</span> <span id="dump1090_total_ac">n/a</span></td>
                             <td><span class="infoBlockTitleText">С позициями:</span> <span id="dump1090_total_ac_positions">n/a</span></td>
-
+                            <td><span class="infoBlockTitleText">Cообщений:</span><div><span id="dump1090_message_rate">n/a</span>/сек</div>
                             </td>
                         </tr>
                         <!--
@@ -1012,15 +1011,12 @@
     </div> <!-- layout_container -->
 
     <div id="SpecialSquawkWarning" class="hidden">
-        <b>Squawk 7x00 is reported and shown.</b><br>
-        This is most likely an error in receiving or decoding.<br>
-        Please do not call the local authorities, they already know about it if it is a valid squawk.
     </div>
 
     <div id="update_error" class="hidden">
-        <b>Problem fetching data from dump1090.</b><br>
+        <b>Проблема с загрузкой данных с приемника</b><br>
         <span id="update_error_detail"></span><br>
-        The displayed map data will be out of date.
+        Отображаемые данные будут устаревшими
     </div>
 
     <div id="container_splitter"></div>
@@ -1067,7 +1063,7 @@
 
         <div class="logo">
             <div class="circle-logo">
-                <img src="/sky/images/logo.svg">
+                <img src="/sky/images/Shit.png">
             </div>
         </div>
         <div class="air-table toggle_sidebar_button">
